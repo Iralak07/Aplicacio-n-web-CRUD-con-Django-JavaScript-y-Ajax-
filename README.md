@@ -49,10 +49,28 @@ PRIMERA PARTE:
   
 
 SEGUNDA PARTE: Una vez creado nuestro modelo, necesitamos ejecutar dos comandos necesarios el "makemigrations" y el "migrate".
+
     # python manage.py makemigrations
+    
     # python manage.py migrate
  
- El makemigrations es el encargado de generar los comandos SQL para la aplicacion preinstalada, mientras que el migrate, ejecuta esos comandos SQL en el archivo de la base de datos en nuestro caso el archivo predeterminado ubicado en la raiz de nuestro proyecto
+ El makemigrations es el encargado de generar los comandos SQL para la aplicacion preinstalada, mientras que el migrate, ejecuta esos comandos SQL en el archivo de la base de datos en nuestro caso el archivo predeterminado ubicado en la raiz de nuestro proyecto. Una vez ejecutado ambos comandos, en ese orden, se habra creado una nueva tabla en la base de datos. Puedes comprabar yendo a tu proyecto > app > makemigrations -> 0001_initial.py. -
+ 
+TERCERA PARTE: Vamos a renderizar nuestro modelo en el administrador predeterminado de Django, para ello vayamos a app/admin.py y coloquemos el siguiente codigo.
+ 
+  from django.contrib import admin
+  from .models import Category
+   
+  admin.site.register(Category)
+  
+
+Esto nos permitira interactuar con nuestro modelo de la base de datos, es decir, crear, recuperar, actualizar y eliminar datos del mismo. Para ello creemos un password para poder acceder al panel de administracion de Django. 
+
+Aclaro que solo utilizaremos el administrador de Django, a manera de vizualizar que nuestro modelo ha sido agregado correctamente, y en el que podemos realizar ciertas acciones para comprobarlo. 
+
+Este proyecto, nuestro objetivo es poder perzonalizar un panel de administrador a nuestro gusto. -
+
+  
 
  
   
