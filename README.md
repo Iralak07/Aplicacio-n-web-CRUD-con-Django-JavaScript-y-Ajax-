@@ -3,7 +3,9 @@
 He decidido crear este repositorio, con el objetivo de poder ayudar a las personas que se encuentran aprendiendo Django y JavaScript, a crear una aplicación CRUD con estas dos herramientas de una forma sencilla y bien explicada.
 
 Que realizaremos dentro de este proyecto principalmente:
-- Crearemos un proyecto en django, este proyecto tendra una aplicacion que se encargara de CREAR, RECUPERAR, ACTUALIZAR Y ELIMINAR registro de una base de datos, a esto se lo denomina CRUD, y con la ayuda de JavaScript procesaremos todos los datos del lado del cliente para luego enviarlo a traves de solicitudes HTTP a nuestro servidor para que la aplicacion lo procese, valide y en su caso realice la accion solicitada, devolviendo una respuesta. Tambien utilizaremos DataTable para mostrar nuestros datos de una forma ordenada y legible. 
+- Crearemos un proyecto en django, este proyecto tendra una aplicacion que se encargara de CREAR, RECUPERAR, ACTUALIZAR Y ELIMINAR registro de una base de datos, a esto se lo denomina CRUD, y con la ayuda de JavaScript procesaremos todos los datos en el  lado del cliente para luego enviarlo a traves de solicitudes HTTP a nuestro servidor para que la aplicacion lo procese, valide y en su caso realice la accion solicitada, devolviendo una respuesta. Tambien utilizaremos DataTable para mostrar nuestros datos de una forma ordenada y legible. 
+
+Django se basa en la arquitectura  MVT (Model-View-Template), y su estructura tiene las siguitnes partes, el 'modelo' que va actuar como la interfaz de sus datos, la 'vista' que actuara como la interfaz de usuario, lo que se ve en el navegador cuando representa un sitio web y por ultimo las plantillas que consta de partes estaticas de la salida HTML, asi como su propia sintaxis que describe como se insertara el contenido dinamico.
 
 PRIMERA PARTE: 
 
@@ -70,6 +72,7 @@ Aclaro que solo utilizaremos el administrador de Django, a manera de vizualizar 
 
 Este proyecto, nuestro objetivo es poder perzonalizar un panel de administrador a nuestro gusto. -
 
+CUARTA PARTE: Una vez definido nuestro modelo y probado su funcionamiento, c 
   
 
  
