@@ -72,7 +72,9 @@ Aclaro que solo utilizaremos el administrador de Django, a manera de vizualizar 
 
 Este proyecto, nuestro objetivo es poder perzonalizar un panel de administrador a nuestro gusto. -
 
-CUARTA PARTE: Una vez definido nuestro modelo y probado su funcionamiento, c 
+CUARTA PARTE: Una vez definido nuestro modelo y probado su funcionamiento, nos enfocaremos en los "Views" o "Vistas", el cual es uno de las principales partes de nuestra estructura MVT (models-views-templates).
+
+A continuacion crearemos y usaremos nuestra vista, considerando nuestro proyecto que contiene nuestra aplicacion blog en mi caso, nos vamos dentro de la aplicacion en el archivo miAplicacion/views.py
   
 
  
