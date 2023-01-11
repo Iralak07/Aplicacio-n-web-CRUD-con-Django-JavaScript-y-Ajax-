@@ -75,7 +75,11 @@ Este proyecto, nuestro objetivo es poder perzonalizar un panel de administrador 
 CUARTA PARTE: Una vez definido nuestro modelo y probado su funcionamiento, nos enfocaremos en los "Views" o "Vistas", el cual es uno de las principales partes de nuestra estructura MVT (models-views-templates).
 
 A continuacion crearemos y usaremos nuestra vista, considerando nuestro proyecto que contiene nuestra aplicacion blog en mi caso, nos vamos dentro de la aplicacion en el archivo miAplicacion/views.py
-  
+
+Antes que nada desearia hacer un sintesis de lo que es la vista, a fin de tener una comprension mas acabada del mismo segun la documentacion oficial de django. Es una funcion de python que toma solicitudes web y devuelve una respuesta web, practicamente puede devolver cualquier cosa (XML, imagen, error 404 etc) y el codigo que lo contiene pude estar ubicado en cualquier parte, pero lo recomendado es hacerlo en un archivo views.py. 
+ 
+
+Vayamos a nuestro archivo views.py, en nuestro caso, a fin de ordenar las vistas lo creamos dentro de una carpeta llamada adminviews/views.py, en el mismo primeramente realizamos una funcion que toma como primer parametro un objeto HttpRequest y dicha funcion dev
 
  
   
