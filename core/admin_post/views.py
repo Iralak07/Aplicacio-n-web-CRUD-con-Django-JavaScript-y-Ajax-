@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, ListView, CreateView
+from django.views.generic import TemplateView
 # Importamos nuestro modelos para usarlos en las vistas
 from core.admin_post.models import Category
 # Reverse_lazy = Es útil cuando necesita usar una inversión de URL antes de que su proyecto URLConf está cargado. Algunos casos comunes donde esta función es necesaria son:
@@ -21,14 +21,14 @@ class DashBoardView(TemplateView):
         return context
     
     
-class ListCategoryView(ListView):
-    template_name = "admin/lista_categorias.html"
-    model = Category
-    
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
-    def post(self,request, *args, **kwargs):
+def listCategory(request):
+        if request.method == 'GET':
+            return render(
+                request, 
+                "admin/lista_categorias.html",
+                 {'modal': FormCategory(),'title':'Category','title_content': 'List Category'},
+                 )
+        
         data = {}
         try:
             action = request.POST['action']
@@ -65,13 +65,5 @@ class ListCategoryView(ListView):
         except Exception as e:
             data['error'] = f'Error de excepcion en el servidor: {str(e)}'
             return JsonResponse(data,safe=False)
-        
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = "Categorias"
-        context["title_model"] = "Listado de categorias"
-        context['title_modal'] = "Ingrese una categoria nueva"
-        context['modal'] = FormCategory()
-        return context
     
 
