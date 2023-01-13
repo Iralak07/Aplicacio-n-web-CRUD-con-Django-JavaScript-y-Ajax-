@@ -9,9 +9,13 @@ Django se basa en la arquitectura  MVT (Model-View-Template), y su estructura ti
 
 PRIMERA PARTE: 
 
-  1 - Comencemos creando un proyecto nuevo en django en el directorio que desea y el nombre que le parezca mas conveniente.
+  1 - Comencemos creando un proyecto nuevo en django en el directorio que desea y el nombre que le parezca mas conveniente, una vez hecho esto, si estamos en mac hacemos un "ls" o en windows con "dir", para ver que nos ha creado con el comando.
       
-      # django-admin startproject nombre_proyecto
+      # django-admin startproject config .
+      
+      #(env) bash-3.2$ django-admin startproject config .
+      #(env) bash-3.2$ ls
+        config          manage.py
       
       
   2 - Una vez creado el proyecto, crea una aplicacion dentro del mismo, que sera el encargado de gestionar las funcionalidades necesarias para tu proyecto
@@ -21,14 +25,14 @@ PRIMERA PARTE:
   3 - Agregamos nuestra aplicacion al proyecto, luego probemos si todo anda bien en nustro servidor local
   
       En el archivo Settings # INSTALLED_APPS = [
-              'app',
+              'core',
           ]
           
       _____________________________
       
       # python manage.py runserver
       
-  4 - Paremos el servidor, y centremonos primeramente en el archvo models, donde definiremos la estructura de los datos que almacenaremos en nuestra base de datos (por cierto, utilizaremos la base de datos predeterminada de django). Obs: este proyecto es a efecto educativo y por lo tanto decidi hacerlo con un solo campo, el cual es el nombre de la categoria, sobre este campo es lo que aplicare el CRUD, es decir Creare categorias, Recuperare esas categorias, Actualizare esas categoria y finalmente lo eliminare. Creo conveniente esto en razon de que el las operaciones realizas sobre este campo, practicamente seran las mismas para todos los demas, salvo ciertas excepciones, para no trabjar con demasiados campos que lo unico que logra muchas veces al momento de estudiar es complicar las cosas. 
+  4 - Paremos el servidor, y centremonos primeramente en el archvo models, donde definiremos la estructura de los datos que almacenaremos en nuestra base de datos (por cierto, utilizaremos la base de datos predeterminada de django). Obs: este proyecto es a efecto educativo y por lo tanto decidi hacerlo con un solo campo, el cual es el nombre de la categoria, sobre este campo es lo que aplicare el CRUD, es decir Creare categorias, Recuperare esas categorias, Actualizare esas categoria y finalmente lo eliminare. Creo conveniente esto en razon de que el las operaciones realizas sobre este campo, practicamente seran las mismas para todos los demas, salvo ciertas excepciones, y para no trabjar con demasiados campos que lo unico que logra muchas veces al momento de estudiar es complicar las cosas. 
   
       from django.db import models
 
@@ -76,7 +80,7 @@ CUARTA PARTE: Una vez definido nuestro modelo y probado su funcionamiento, nos e
 
 A continuacion crearemos y usaremos nuestra vista, considerando nuestro proyecto que contiene nuestra aplicacion blog en mi caso, nos vamos dentro de la aplicacion en el archivo miAplicacion/views.py
 
-Antes que nada desearia hacer un sintesis de lo que es la vista, a fin de tener una comprension mas acabada del mismo segun la documentacion oficial de django. Es una funcion de python que toma solicitudes web y devuelve una respuesta web, practicamente puede devolver cualquier cosa (XML, imagen, error 404 etc) y el codigo que lo contiene pude estar ubicado en cualquier parte, pero lo recomendado es hacerlo en un archivo views.py. 
+Antes que nada desearia hacer un sintesis de lo que es la vista, a fin de tener una comprension mas acabada del mismo, segun la documentacion oficial de django es una funcion de python que toma solicitudes web y devuelve una respuesta web, practicamente puede devolver cualquier cosa (XML, imagen, error 404 etc) y el codigo que lo contiene pude estar ubicado en cualquier parte, pero lo recomendado es hacerlo en un archivo views.py. 
  
 
 Vayamos a nuestro archivo views.py, en nuestro caso, a fin de ordenar las vistas lo creamos dentro de una carpeta llamada adminviews/views.py, en el mismo primeramente realizamos una funcion que toma como primer parametro un objeto HttpRequest y dicha funcion dev
