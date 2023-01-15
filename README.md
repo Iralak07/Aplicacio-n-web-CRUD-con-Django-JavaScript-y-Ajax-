@@ -101,8 +101,29 @@ Es aqui, donde debemos crear una carpeta dentro de nuestra aplicacion a fin de c
       |
       core
         |
-         - teplates/listCategory.html
+         - templates/listCategory.html
+       
 
+Una vez creada nuestra funcion listCategory y nuestra plantilla html, practicamente estamos completando nuestra estructura MVT (models, views, templates), ahora necesitamos manejar la solicitudes, asignando una URL a esta vista para poder llamarlo desde nuestro navegador, para ello crearemos un archivo.py dentro de nuestra plicacion llamado urls.py y dentro del mismo creemos el siguiente codigo.
 
+    from django.urls import path
+    from .views import listCategory
 
+    urlpatterns = [
+        path('listCategory/',listCategory, name='listCategory'),
+    ]
+
+Una vez hecho esto, debemos ir dentor de nuestra carpeta de configuracion, al archivo url.py a fin de incluir nuestro archivo de configuracion urls creado en nuestra aplicacion de la siguiente manera. Obs: a fin de no hacer demasiado extenso doy por sentado que se tiene un conocimiento sobre esta cuestion.
+
+    from django.contrib import admin
+    from django.urls import path, include
+
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        path('blog/', include('core.urls')),
+
+    ]
+    
+
+Guardemos, corramos el servidor y vayamos al local host http://localhost:8000/, donde django nos indica que no existe una coincidencia con la url pasada. Si revisamos nuestro archivo url en el directorio de configuracion, vemos que hemos ingresado como primer argumento en el path 'blog/', y como segundo argumento incluimos nuestro archivo urls ubicado en nuestra aplicacion, donde habiamos puesto como primer argumento del path como 'listCategory/', por lo tanto a fin de haya una coincidencia con la url ingresada y django pueda llamar efectivamente a nuestra vista y devolvernos la plantilla html, necesitamos ingresar lo siguiente http://localhost:8000/blog/listCategory, aqui django ha encontrado una coincidencia y ha llamado a nuestra vista "listCategory", el cual nos ha devuelto una plantilla html vacia hasta este momento
 
