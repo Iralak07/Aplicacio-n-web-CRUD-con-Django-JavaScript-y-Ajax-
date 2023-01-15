@@ -74,19 +74,34 @@ Esto nos permitira interactuar con nuestro modelo de la base de datos, es decir,
 
 Aclaro que solo utilizaremos el administrador de Django, a manera de vizualizar que nuestro modelo ha sido agregado correctamente, y en el que podemos realizar ciertas acciones para comprobarlo. 
 
-Este proyecto, nuestro objetivo es poder perzonalizar un panel de administrador a nuestro gusto. -
+En este proyecto, nuestro objetivo es poder perzonalizar un panel de administrador a nuestro gusto y necesidades, utilizando varias herramientas.
 
 CUARTA PARTE: Una vez definido nuestro modelo y probado su funcionamiento, nos enfocaremos en los "Views" o "Vistas", el cual es uno de las principales partes de nuestra estructura MVT (models-views-templates).
 
-A continuacion crearemos y usaremos nuestra vista, considerando nuestro proyecto que contiene nuestra aplicacion blog en mi caso, nos vamos dentro de la aplicacion en el archivo miAplicacion/views.py
+A continuacion crearemos y usaremos nuestra vista, considerando nuestro proyecto que contiene nuestra aplicacion blog en mi caso, nos vamos dentro de la aplicacion en el archivo core/views.py
 
 Antes que nada desearia hacer un sintesis de lo que es la vista, a fin de tener una comprension mas acabada del mismo, segun la documentacion oficial de django es una funcion de python que toma solicitudes web y devuelve una respuesta web, practicamente puede devolver cualquier cosa (XML, imagen, error 404 etc) y el codigo que lo contiene pude estar ubicado en cualquier parte, pero lo recomendado es hacerlo en un archivo views.py. 
  
+En nuestro archivo views.py escribimos el siguiente codigo:
 
-Vayamos a nuestro archivo views.py, en nuestro caso, a fin de ordenar las vistas lo creamos dentro de una carpeta llamada adminviews/views.py, en el mismo primeramente realizamos una funcion que toma como primer parametro un objeto HttpRequest y dicha funcion dev
+  from django.shortcuts import render
+  from .models import Category
 
- 
-  
+
+  def listCategory(request):
+      cat = Category.objects.all()
+      return render(request, 'listCategory.html', {'cat':cat})
+      
+Importamos "render" desde django.shortcuts, este se encarga de renderizar nuestra aplicacion a una plantilla html, para ello necesita necesariamente que se le pase tres argumentos que debe retornar nuestra funcion, 1-) reuqest: El objeto de solicitud utilizado para generar esta respuesta. 2-) template_name: El nombre completo de una plantilla para usar. 3-) Un diccionario de valores para agregar al contexto de la plantilla. Por defecto, este es un diccionario vacío. Si un valor en el diccionario es invocable, el view lo llamará justo antes de renderizar la plantilla, en nuestro caso estamos devolviendo los nombres de categoria existentes en nuestra base de datos.
+
+Es aqui, donde debemos crear una carpeta dentro de nuestra aplicacion a fin de colocar en ellas nuestras plantillas que utilizaremos para nuestro proyecto, para ello vayamos a nuestra aplicacion core, y dentro de ella creemos una carpeta llamada "templates" y dentro de la misma cremos un archivo html, que sera el mismo utilizado en nuestra funcion listCategory creado anteriormente.
+
+
+    blog
+      |
+      core
+        |
+         - teplates/listCategory.html
 
 
 
