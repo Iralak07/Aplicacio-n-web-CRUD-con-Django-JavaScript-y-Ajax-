@@ -125,5 +125,26 @@ Una vez hecho esto, debemos ir dentor de nuestra carpeta de configuracion, al ar
     ]
     
 
-Guardemos, corramos el servidor y vayamos al local host http://localhost:8000/, donde django nos indica que no existe una coincidencia con la url pasada. Si revisamos nuestro archivo url en el directorio de configuracion, vemos que hemos ingresado como primer argumento en el path 'blog/', y como segundo argumento incluimos nuestro archivo urls ubicado en nuestra aplicacion, donde habiamos puesto como primer argumento del path como 'listCategory/', por lo tanto a fin de haya una coincidencia con la url ingresada y django pueda llamar efectivamente a nuestra vista y devolvernos la plantilla html, necesitamos ingresar lo siguiente http://localhost:8000/blog/listCategory, aqui django ha encontrado una coincidencia y ha llamado a nuestra vista "listCategory", el cual nos ha devuelto una plantilla html vacia hasta este momento
+Guardemos, corramos el servidor y vayamos al local host http://localhost:8000/, donde django nos indica que no existe una coincidencia con la url pasada. Si revisamos nuestro archivo url en el directorio de configuracion, vemos que hemos ingresado como primer argumento en el path 'blog/', y como segundo argumento incluimos nuestro archivo urls ubicado en nuestra aplicacion, donde habiamos puesto como primer argumento del path como 'listCategory/', por lo tanto a fin de haya una coincidencia con la url ingresada y django pueda llamar efectivamente a nuestra vista y devolvernos la plantilla html, necesitamos ingresar lo siguiente http://localhost:8000/blog/listCategory, aqui django ha encontrado una coincidencia y ha llamado a nuestra vista "listCategory", el cual nos ha devuelto una plantilla html vacia hasta este momento.
+
+Se acuerdan el tercer argumento de nuestro "return render(request, 'listCategory.html', {'cat':cat})" en el archivo views.py, formado por un diccionario el cual fue renderizado a nuestra plantilla html, el cual no solo tiene la capacidad para mostrar archivos estaticos sino tambien los datos de nuestra base de datos en especifico, a traves de etiquetas o variables dentro de llaves simples o llaves dobles segun sea un condicional, un bucle o una variable. Probemos en nustra plantilla mostrar lo que hay dentro de el diccionario renderizado.
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>List Category</title>
+    </head>
+    <body>
+        
+        <p>List category: {{cat}}</p>
+    </body>
+    </html>
+
+
+Vayamos a nuestro navegador y actualizemos la pagina, veremos un "<QuerySet []>" 
+
+QUINTA PARTE: 
 
