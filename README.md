@@ -144,7 +144,9 @@ Se acuerdan el tercer argumento de nuestro "return render(request, 'listCategory
     </html>
 
 
-Vayamos a nuestro navegador y actualizemos la pagina, veremos un "<QuerySet []>", que es la consulta que hemos hecho en la base de datos dentro de nuestro archivo views.py, con la siguiente linea "cat = Category.objects.all()", donde en la variable cat gruardamos la consulta realizada a la base de datos, en nuestro caso nos ha devuelto un queryset vacio, ya que no hemos registrado ningun nombre de categoria dentro de nuestra base de datos. Vayamos al panel de administrador de Django y carguemos una categoria, luego vayamos a nuevamente a la url http://localhost:8000/blog/listCategory, actualizemos y tenemos un queryset que nos devuelve un objeto del modelo category con el nombre que registramos, si agregamos v
+Vayamos a nuestro navegador y actualizemos la pagina, veremos un "<QuerySet []>", que es la consulta que hemos hecho en la base de datos dentro de nuestro archivo views.py, con la siguiente linea "cat = Category.objects.all()", donde en la variable cat gruardamos la consulta realizada a la base de datos, en nuestro caso nos ha devuelto un queryset vacio, ya que no hemos registrado ningun nombre de categoria dentro de nuestra base de datos. Vayamos al panel de administrador de Django y carguemos una categoria, luego vayamos a nuevamente a la url http://localhost:8000/blog/listCategory, actualizemos y tenemos un queryset que nos devuelve un objeto del modelo category con el nombre que registramos, si agregamos varios nombres veremos algo asi:
+  
+    "List category: <QuerySet [<Category: Python y Django>, <Category: JavasScript>, <Category: Ajax>]>" 
 
 QUINTA PARTE: 
 
