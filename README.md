@@ -144,9 +144,25 @@ Se acuerdan el tercer argumento de nuestro "return render(request, 'listCategory
     </html>
 
 
-Vayamos a nuestro navegador y actualizemos la pagina, veremos un "<QuerySet []>", que es la consulta que hemos hecho en la base de datos dentro de nuestro archivo views.py, con la siguiente linea "cat = Category.objects.all()", donde en la variable cat gruardamos la consulta realizada a la base de datos, en nuestro caso nos ha devuelto un queryset vacio, ya que no hemos registrado ningun nombre de categoria dentro de nuestra base de datos. Vayamos al panel de administrador de Django y carguemos una categoria, luego vayamos a nuevamente a la url http://localhost:8000/blog/listCategory, actualizemos y tenemos un queryset que nos devuelve un objeto del modelo category con el nombre que registramos, si agregamos varios nombres veremos algo asi:
+Vayamos a nuestro navegador y actualizemos la pagina, veremos un "<QuerySet []>", que es la consulta que hemos hecho a la base de datos dentro de nuestro archivo views.py, con la siguiente linea "cat = Category.objects.all()", donde en la variable cat guardamos la consulta realizada a la base de datos, en nuestro caso nos ha devuelto un queryset vacio, ya que no hemos registrado ningun nombre de categoria dentro de nuestra base de datos. Vayamos al panel de administrador de Django y carguemos una categoria, luego vayamos a nuevamente a la url http://localhost:8000/blog/listCategory, actualizemos y tenemos un queryset que nos devuelve un objeto del modelo category con el nombre que registramos, si agregamos varios nombres veremos algo asi:
   
     "List category: <QuerySet [<Category: Python y Django>, <Category: JavasScript>, <Category: Ajax>]>" 
+    
+ Recorramos la lista dentro de nuestro archivo html para ver que informacion nos proporciona cada registro, para asi poder trabajarlo seguidamente.
+ 
+       <ul>
+      {% for categoria in cat %}
+          <li>Id: {{categoria.id}} Name: {{categoria.name}}</li>
+      {% endfor %}
+      </ul>
+
+Esto nos da como resultado lo siguiente: 
+  
+      Id: 2 Name: Python y Django
+      Id: 3 Name: JavasScript
+      Id: 4 Name: Ajax
+      
+Vemos que nos arroja un id y un nombre de la categoria, en  la siguiente parte arreglaremos esto para que podamos ver de una forma ordenada, utilizando una herramienta que particularmente es muy util para mostrar datos y poder manipular esos datos desde el front-end.
 
 QUINTA PARTE: 
 
