@@ -162,7 +162,7 @@ Esto nos da como resultado lo siguiente:
       Id: 3 Name: JavasScript
       Id: 4 Name: Ajax
       
-Vemos que nos arroja un id y un nombre de la categoria, en  la siguiente parte arreglaremos esto para que podamos ver de una forma ordenada, utilizando una herramienta que particularmente es muy util para mostrar datos y poder manipular esos datos desde el front-end.
+Vemos que nos arroja un id y un nombre de la categoria, en  la siguiente parte arreglaremos esto para que podamos ver de una forma ordenada, utilizando una herramienta que es muy util para mostrar datos y poder manipular esos datos desde el front-end.
 
 QUINTA PARTE: 
 
