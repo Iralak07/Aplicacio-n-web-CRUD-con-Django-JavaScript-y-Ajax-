@@ -164,5 +164,93 @@ Esto nos da como resultado lo siguiente:
       
 Vemos que nos arroja un id y un nombre de la categoria, en  la siguiente parte arreglaremos esto para que podamos ver de una forma ordenada, utilizando una herramienta que es muy util para mostrar datos y poder manipular esos datos desde el front-end.
 
-QUINTA PARTE: 
+QUINTA PARTE: En esta parte, trabajaremos nuestro archivo html a fin de mostrar nuestros datos, para ello utilizaremos una herramienta muy util llamada datatable, consistente en una extensión de jQuery que nos permite pintar tablas con paginado, búsqueda, ordenar por columnas, etc, lo pueden encontrar en https://datatables.net/.
+
+DataTables solo tiene una dependencia de biblioteca (otro software en el que se basa para funcionar): jQuery, para ello vayamos a la pagina oficial, descarguemos y guardemoslo, a modo de referencia., que es jquery?, segun la documentacion oficial: es una biblioteca de JavaScript rápida, pequeña y rica en funciones. Hace cosas como recorrido y manipulación de documentos HTML, manejo de eventos, animación y Ajax mucho más simple con una API fácil de usar que funciona en multitud de navegadores. 
+
+Creemos un direcotrio nuevo llamado static en nuestro directorio raiz, a fin de que contenga las librerias y herramientas que utilizaremos en nuestra aplicacion, luego vayamos a nuestro archivo de configuracion, y agreguemos STATICFILES_DIRS, esto a modo de contener nuestos archivos estaticos dentro de un solo directorio para todas nuestras aplicaciones que utilicemos en nuestro proyecto.
+
+    STATIC_URL = 'static/'
+
+    STATICFILES_DIRS = [
+        BASE_DIR / "static",
+    ]
+  
+Luego dentro de nuestro archivo html, utilicemos la etiqueta "static" para construir la URL para la ruta relativa de nuestro archivo que contiene el jquery descargado.
+
+    {% load static %}
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>List Category</title>
+        <!-- Jquery -->
+        <script src="{% static 'lib/jquery-3.6.3.min.js'%}"></script>
+    </head>
+
+Creemos una tabla, cuyo codigo se encuentra en https://datatables.net/manual/installation. 
+
+      <table id="table_id" class="display">
+          <thead>
+              <tr>
+                  <th>Column 1</th>
+                  <th>Column 2</th>
+              </tr>
+          </thead>
+          <tbody>
+            {% for category in cat %}
+              <tr>
+                  <td>{{ category.id} }</td>
+                  <td>{{ category.name }}</td>
+              </tr>
+             {% endfor %}
+          </tbody>
+      </table>
+
+Actualicemos nuestra pagina y veremos nuestra tabla con los datos existentes en nuestra base de datos.
+
+      Id 	Name
+      2 	Python y Django
+      3 	JavasScript
+      4 	Ajax
+      
+Tenemos una tabla valida, ahora nos queda implementar DataTable, primeramente debemos incluir los archivos fuentes en nuestra pagina, para ello vayamos a https://datatables.net/download/ y descarguemos, luego incluye el archivo dentor del directorio static creado anteriormente.
+
+    <!-- DataTable -->
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/DataTables/datatables.min.css'%}"/>
+    <script type="text/javascript" src="{% static 'lib/DataTables/datatables.min.js"'%}></script>
+    
+ Incluyamos las rutas para que pueda cargarse junto con nuestro archivo html, una vez hecho esto, nuestra cabecera dentro de nuestro archivo html deberia de lucir de la siguiente manera.
+ 
+     <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>List Category</title
+        
+        <!-- Jquery -->
+        <script type="text/javascript" src="{% static 'lib/jquery-3.6.3.min.js'%}"></script>
+
+        <!-- DataTable -->
+        <link rel="stylesheet" type="text/css" href="{% static 'lib/DataTables/datatables.min.css'%}"/>
+        <script type="text/javascript" src="{% static 'lib/DataTables/datatables.min.js'%}"></script>
+     </head>
+     
+ Ahora iniciemos nuestra tabla de datos con DataTable, para ello dentro de nuestro documento, luego del body, creemos unas lineas de JavaScript y actulicemos.
+ 
+    <script type="application/javascript">
+        $(document).ready( function () {
+           $('#table_id').DataTable();
+        });
+    </script>
+ 
+![Captura de pantalla 2023-01-24 a la(s) 13 30 03](https://user-images.githubusercontent.com/99599597/214351775-8e8397c0-bad4-4d23-912f-b7456cf459ab.png)
+
+    
+ 
+
+
+
+
 
