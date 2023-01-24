@@ -245,7 +245,12 @@ Tenemos una tabla valida, ahora nos queda implementar DataTable, primeramente de
         });
     </script>
  
-![Captura de pantalla 2023-01-24 a la(s) 13 30 03](https://user-images.githubusercontent.com/99599597/214351775-8e8397c0-bad4-4d23-912f-b7456cf459ab.png)
+ 
+![datatable_1](https://user-images.githubusercontent.com/99599597/214352417-a52f0d72-7360-4035-b4ef-a017c6613518.png)
+
+¡Eso es todo! DataTables agregará ordenamiento, búsqueda, paginación e información a su tabla de manera predeterminada, brindando la capacidad de encontrar la información que desean lo más rápido posible. FUENTE: https://datatables.net/manual/installation. 
+
+
 
     
  
