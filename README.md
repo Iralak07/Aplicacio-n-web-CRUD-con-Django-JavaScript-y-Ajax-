@@ -324,9 +324,19 @@ Aqui, utilizamos primeramente  $(document).ready(), a fin de poder manipular cor
                   data['error'] = str(e)
                   return JsonResponse(data, safe=False)
                   
-Aqui, lo primero que realizamos es comparar las solicitudes realizadas a nuestra vista, comprobamos si el reques.method corresponde a 'GET' o 'POST', al acceder a nuestra url listCategory/ a traves del metodo 'GET' nos renderiza a nuestro teamplate_name. Anteriormente hablamos sobre  $(document).ready(), una vez cargado completamente nuestra pagina, se llama a DataTable y se realiza la peticion 'POST' con Ajax, esto llama nuevamente a nuestra vista, en donde lo manejamos con los condicionales, en este caso ingresa al segundo condicional, realizamos un try que nos permite probar el bloque de codigo y manejar cualquier tipo de error 
+Aqui, lo primero que realizamos es comparar las solicitudes realizadas a nuestra vista, comprobamos si el reques.method corresponde a 'GET' o 'POST', al acceder a nuestra url listCategory/ a traves del metodo 'GET' nos renderiza a nuestro teamplate_name. Anteriormente hablamos sobre  $(document).ready(), una vez cargado completamente nuestra pagina, se llama a DataTable y se realiza la peticion 'POST' con Ajax, esto llama nuevamente a nuestra vista, en donde lo manejamos con los condicionales, en este caso ingresa al segundo condicional, realizamos un try que nos permite probar el bloque de codigo y manejar cualquier tipo de error que pudiera suceder al tratar de obtener el valor de request.POST['action'] o al momento de hacer la consulta con Category.objects.all(). Luego volvemos a agregar un condicional en donde prueba si la variable action es igual a 'search', si esto es true entonces ingresa sobre el bloque y dentro de la variable data obtiene las categorias existentes, pero sin antes convertir los datos y enviarlos con JsonResponse que transforma los datos que le pasa en una cadena JSON y establece el encabezado HTTP del tipo de contenido en application/json.
 
+Luego en caso de que ocurra algun error dentro del codigo try, controlamos el error con except Exception as e, que nos devolverna un mensaje con el tipo de error ocurrido, lo agregamos a data['error] y lo retornamos con JsonResponse. 
 
+Ahora bien, hagamos correr nuestro servidor y verificar que todo salio bien.
+
+![Captura de pantalla 2023-01-25 a la(s) 19 55 11](https://user-images.githubusercontent.com/99599597/214711883-c4254244-d817-4d3c-a020-75612f53ca1d.png)
+
+En esta caputra se puede observar, que se ha cargado correctamente el DataTables, aqui vemos al inspeccionar el documento html, que se ha enviado en la solicitud el dato que le hemos pasado con "action" y su valor 'search'.
+
+![Captura de pantalla 2023-01-25 a la(s) 20 07 56](https://user-images.githubusercontent.com/99599597/214712476-30108edd-eb71-445b-af6c-6d7481ffd7d2.png)
+
+Y como respuesta una matriz con los datos provenientes de nuestra base de datos, cargado previamente a traves del administrador predeterminado de Django.
     
  
 
