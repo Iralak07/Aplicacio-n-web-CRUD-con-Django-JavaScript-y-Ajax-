@@ -250,6 +250,75 @@ Tenemos una tabla valida, ahora nos queda implementar DataTable, primeramente de
 
 ¡Eso es todo! DataTables agregará ordenamiento, búsqueda, paginación e información a su tabla de manera predeterminada, brindando la capacidad de encontrar la información que desean lo más rápido posible. FUENTE: https://datatables.net/manual/installation. 
 
+SEXTA PARTE: en este apartado utilizaremos Ajax para recuperar nuestros datos desde la base de datos, primeramente, creare un archivo javascript llamado funciones, donde incluire nuestro codigo apartado del archivo html, para organizarnos mejor. Como es una funcion propia, lo incluire dentro del directorio static creado previamente dentro de nuestra aplicacion y agreguemos el directorio en nuestro archivo settings
+
+    STATICFILES_DIRS = [
+        BASE_DIR / "static",
+        BASE_DIR / "core/static"
+    ]
+    
+Ahora vayamos a nuestro archivo funciones y creemos la solicitud de datos con Ajax para ser cargados directamente a nuestra tabla. Los datos de Ajax son cargados por DataTables simplemente usando las opciones que nos proporciona ajax, para esto nuestro codigo tanto en el archivo js funciones, listCategory.html y el views.py queda de la siguiente manera, luego pasare a explicar punto por punto que fue lo que hicimos.
+
+1.- Archivo funciones.js dentro del directorio static de nuestra aplicacion.
+    
+          $(document).ready( function () {
+          var csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+          $('#table_id').DataTable( {
+              ajax:{
+                  headers: {'X-CSRFToken': csrftoken},
+                  url: window.location.pathname,
+                  type: 'POST',
+                  data: {
+                      action: 'search',
+                  },
+                  dataSrc: ""
+              },
+              columns: [
+                  {"data": [0]},
+                  {"data": [1]},
+              ]
+          } );
+      });
+   
+ 2.- Archivo listCategory.html dentro de nuestro directorio templates.
+  
+        <body>
+            {% csrf_token %}
+            <table id="table_id" class="display">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+            </table>
+            <button>Register Category</button>
+            <button id="buttonUpdate">Update</button>
+        </body>
+
+
+3.- Archivo views.py dentro de nuestra aplicacion.
+ 
+    from django.shortcuts import render
+    from .models import Category
+
+    from django.http import JsonResponse
+
+      def listCategory(request):
+          data = {}
+          if request.method == 'GET':
+              template_name = 'listCategory.html'
+              cat = Category.objects.all()
+              return render(request, template_name)
+          if request.method == "POST":
+              try:
+                  action = request.POST['action']
+                  if action == 'search':
+                      data = list(Category.objects.all().values_list())
+                      return JsonResponse(data, safe=False)
+              except Exception as e:
+                  data['error'] = str(e)
+                  return JsonResponse(data, safe=False)
 
 
     
