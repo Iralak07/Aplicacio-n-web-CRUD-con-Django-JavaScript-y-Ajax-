@@ -259,28 +259,7 @@ SEXTA PARTE: en este apartado utilizaremos Ajax para recuperar nuestros datos de
     
 Ahora vayamos a nuestro archivo funciones y creemos la solicitud de datos con Ajax para ser cargados directamente a nuestra tabla. Los datos de Ajax son cargados por DataTables simplemente usando las opciones que nos proporciona ajax, para esto nuestro codigo tanto en el archivo js funciones, listCategory.html y el views.py queda de la siguiente manera, luego pasare a explicar punto por punto que fue lo que hicimos.
 
-1.- Archivo funciones.js dentro del directorio static de nuestra aplicacion.
-    
-          $(document).ready( function () {
-          var csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
-          $('#table_id').DataTable( {
-              ajax:{
-                  headers: {'X-CSRFToken': csrftoken},
-                  url: window.location.pathname,
-                  type: 'POST',
-                  data: {
-                      action: 'search',
-                  },
-                  dataSrc: ""
-              },
-              columns: [
-                  {"data": [0]},
-                  {"data": [1]},
-              ]
-          } );
-      });
-   
- 2.- Archivo listCategory.html dentro de nuestro directorio templates.
+ 1.- Archivo listCategory.html dentro de nuestro directorio templates.
   
         <body>
             {% csrf_token %}
@@ -292,10 +271,35 @@ Ahora vayamos a nuestro archivo funciones y creemos la solicitud de datos con Aj
                     </tr>
                 </thead>
             </table>
-            <button>Register Category</button>
-            <button id="buttonUpdate">Update</button>
         </body>
+Aqui, lo primero que hicimos fue usar la proteccion CSRF de django, ya que realizaremos la solicitud de los datos a traves del metodo POST, para ello usamos la etiqueta {% csrf_token %}, el cual sera enviado junto con la solicitud de Ajax.
+        
+2.- Archivo funciones.js dentro del directorio static de nuestra aplicacion.
+    
+          $(document).ready( function () {
+          var csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+          $('#table_id').DataTable( {
+              ajax:{
+                  headers: {'X-CSRFToken': csrftoken},
+                  url: window.location.pathname,
+                  type: 'POST',
+                  data: {
+                      action: 'search',
+                  },
+                  dataSrc = ''
+              },
+              columns: [
+                  {"data": [0]},
+                  {"data": [1]},
+              ]
+          } );
+      });
 
+Aqui, utilizamos primeramente  $(document).ready(), a fin de poder manipular correctamente nuestra pagina html hasta que el documento se haya cargado completamente, luego creo una variable csrftoken que es igual al valor que contiene nuestro {% csrf_token %}. Una vez hecho esto llamamos a DataTable y cuyos datos son recuperados a traves de una solicitud ajax, como se puede observar precedentemente.
+2.1 - headers = en cada XMLHttpRequest, personalizamos el encabezado X-CSRFToken con el valor del token que obtuvimos con la variable csrftoken.
+2.2 - url: window.location.pathname, nos devuelve la ruta y el nombre del archivo de la pagina actual, al cual realizara la peticion.
+2.3 - data = son los datos que enviamos junto a la peticion, en este caso he enviado un action con el valor 'search', a fin de poder trabajarlo dentro de nuestro archivo views.py, que lo veremos mas claramente a medida que vayamos termianado nuestra aplicacion. 
+2.4 - dataSrc = se usa para decirle a DataTables donde esta la matriz de datos en la escructura JSON. En nuestro caso le hemos colocado una cadena vacia como caso especial que le dice a DataTables que espere una matriz. En este caso no requiere configurar los datos de la columnas, esto se debe a que el valor predeterminado para las columnas es el indice las las columnas columns: [ {"data": [0]}, {"data": [1]},], en nuestro caso solo nos devolver una matriz con dos datos que se ubican en la posicion 0 y 1.
 
 3.- Archivo views.py dentro de nuestra aplicacion.
  
@@ -319,6 +323,8 @@ Ahora vayamos a nuestro archivo funciones y creemos la solicitud de datos con Aj
               except Exception as e:
                   data['error'] = str(e)
                   return JsonResponse(data, safe=False)
+                  
+Aqui, lo primero que realizamos es comparar las solicitudes realizadas a nuestra vista, comprobamos si el reques.method corresponde a 'GET' o 'POST', al acceder a nuestra url listCategory/ a traves del metodo 'GET' nos renderiza a nuestro teamplate_name. Anteriormente hablamos sobre  $(document).ready(), una vez cargado completamente nuestra pagina, se llama a DataTable y se realiza la peticion 'POST' con Ajax, esto llama nuevamente a nuestra vista, en donde lo manejamos con los condicionales, en este caso ingresa al segundo condicional, realizamos un try que nos permite probar el bloque de codigo y manejar cualquier tipo de error 
 
 
     
