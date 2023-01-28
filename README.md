@@ -334,10 +334,14 @@ Ahora bien, hagamos correr nuestro servidor y verificar que todo salio bien.
 
 En esta caputra se puede observar, que se ha cargado correctamente el DataTables, aqui vemos al inspeccionar el documento html, que se ha enviado en la solicitud el dato que le hemos pasado con "action" y su valor 'search'.
 
+![admin_carga_categorias](https://user-images.githubusercontent.com/99599597/215278681-a06e7596-3573-4159-9c0c-83822b60b376.png)
+
+
 ![Captura de pantalla 2023-01-25 a la(s) 20 07 56](https://user-images.githubusercontent.com/99599597/214712476-30108edd-eb71-445b-af6c-6d7481ffd7d2.png)
 
 Y como respuesta una matriz con los datos provenientes de nuestra base de datos, cargado previamente a traves del administrador predeterminado de Django.
-    
+
+
  
 
 
