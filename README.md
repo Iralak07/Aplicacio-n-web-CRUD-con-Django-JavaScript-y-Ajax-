@@ -341,9 +341,104 @@ En esta caputra se puede observar, que se ha cargado correctamente el DataTables
 
 Y como respuesta una matriz con los datos provenientes de nuestra base de datos, cargado previamente a traves del administrador predeterminado de Django.
 
+SEPTIMA PARTE: Una vez que pudimos recuperar nuestros datos de la base de datos con Ajax y mostrarlo a traves de DataTables, en esta seccion veremos como poder cargar un registro desde nuestra pagina listCategory.html, utilizando los modals de bootstrap, rellenando un formulario en nuestro front-end y enviarlos a nuestro back-end para que sea procesado, validado y creado un nuesvo registro que sera mostrado en nuestra tabla.
 
- 
+Para ello primeramente vayamos a la pagina oficial de bootstrap https://getbootstrap.com/docs/4.6/getting-started/download/, descarguemoslo y guardemoslo dentro de static en nuestro directorio raiz en la carpeta lib, agreguemoslo en nuestro archivo html de la siguiente manera.
 
+      <head>
+          <meta charset="UTF-8">
+          <meta http-equiv="X-UA-Compatible" content="IE=edge">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>List Category</title>
+
+
+          <!-- Jquery -->
+          <script type="text/javascript" src="{% static 'lib/jquery-3.6.3.min.js'%}"></script>
+
+          <!-- DataTable -->
+          <link rel="stylesheet" type="text/css" href="{% static 'lib/DataTables/datatables.min.css'%}"/>
+          <script type="text/javascript" src="{% static 'lib/DataTables/datatables.min.js'%}"></script>
+
+          <!-- Boostrap v4-->
+          <link rel="stylesheet" href="{% static 'lib/bootstrap-4.6.2-dist/css/bootstrap.min.css'%}">
+          <script src="{% static 'lib/bootstrap-4.6.2-dist/js/bootstrap.min.js' %}"></script>
+
+           <!-- Funciones propias -->
+          <script type="text/javascript" src="{% static 'funciones.js'%}"></script>
+      </head>
+
+En este tutorial solo me abocare a la tarea de mostrar el funcionamiento del CRUD, no asi los estilos en el front-end, por lo que queda a criterio y gusto de vosotros el darles los estilos que les parezca mas conveniente. En este enlace pueden perzonalizar DataTables con boostrap https://datatables.net/examples/styling/bootstrap4.html. 
+
+Una vez incorporado boostrap a nuestro archivo html, vayamos  a https://getbootstrap.com/docs/4.6/components/modal/, en dicho sitio veremos los ejemplos de modals que nos seran de utilidad para poder realizar la tarea que nos propusimos en esta seccion.
+
+    <body>
+        {% csrf_token %}
+        <div class="container-fluid m-2">
+            <table id="table_id" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+            </table>
+            <button class="btn btn-primary" id="btnCreateCategory">Register Category</button>
+            <button class="btn btn-success" id="buttonUpdate">Update</button>
+        </div>
+
+    </body>
+    <div class="modal fade" id="modal_category" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+Agregamos a nuestro archivo html, la siguiente linea copiada de los ejemplos de modals, en el que se puede observar que lo hemos puesto al terminar el body. Lo importante y lo que utilizaremos para llamar a nuestro modal sera el (id="modal_category"), como asi tambien al button Register Category le hemos puesto un identificador "btnCreateCategory", a fin de que con el evento click podemos llamar a aquel. Dentro de nuestro archivo funciones.js escribimos la siguiente linea de codigo.
+
+    $(document).ready( function () {
+        var csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+        $('#table_id').DataTable( {
+            ajax:{
+                headers: {'X-CSRFToken': csrftoken},
+                url: window.location.pathname,
+                type: 'POST',
+                data: {
+                    action: 'search',
+                },
+                dataSrc: ""
+            },
+            columns: [
+                {"data": [0]},
+                {"data": [1]},
+            ]
+        } );
+
+        $('#buttonUpdate').on('click', function(){
+            $('#table_id').DataTable().ajax.reload();
+        });
+
+
+        $('#btnCreateCategory').on('click', function(){
+            $('#modal_category').modal('show');
+        });
+    });
+    
+Con $('#btnCreateCategory) tomamos el evento click y disparamos la funcion que a su vez toma nuestro modals y lo muestra con  $('#modal_category').modal('show'), guardemoslo y hagamos click en el boton Register Category.
 
 
 
