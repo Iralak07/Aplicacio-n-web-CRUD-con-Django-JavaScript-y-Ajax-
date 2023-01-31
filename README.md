@@ -441,5 +441,8 @@ Agregamos a nuestro archivo html, la siguiente linea copiada de los ejemplos de 
 Con $('#btnCreateCategory) tomamos el evento click y disparamos la funcion que a su vez toma nuestro modals y lo muestra con  $('#modal_category').modal('show'), guardemoslo y hagamos click en el boton Register Category.
 
 
+![mostrar_modal](https://user-images.githubusercontent.com/99599597/215790617-43b6f9ef-1338-474d-97e1-638e3cea236a.png)
+
+
 
 
