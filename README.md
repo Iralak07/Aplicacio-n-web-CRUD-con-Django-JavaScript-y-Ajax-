@@ -437,12 +437,33 @@ Agregamos a nuestro archivo html, la siguiente linea copiada de los ejemplos de 
             $('#modal_category').modal('show');
         });
     });
-    
+
+
 Con $('#btnCreateCategory) tomamos el evento click y disparamos la funcion que a su vez toma nuestro modals y lo muestra con  $('#modal_category').modal('show'), guardemoslo y hagamos click en el boton Register Category.
 
 
 ![mostrar_modal](https://user-images.githubusercontent.com/99599597/215790617-43b6f9ef-1338-474d-97e1-638e3cea236a.png)
 
 
+Una vez hecho esto, tendremos que poner en nuestra ventana modals de boostrap un formulario, en nuestro caso solo esta compuesto con un campo el cual es el nombre de la categoria, el formulario propiamente dicho es un punto de entrada que una vez completado es enviado a nuestra back-end para ser procesado, validado y guardado en su caso. 
 
+Para ello creemos un archivo forms.py dentro del directorio de nuestra aplicacion, en el cual realizaremos el siguiente codigo.
+
+    from django import forms
+    from .models import Category
+
+    class CategoryForm(forms.ModelForm):
+        class Meta:
+            model = Category
+            fields = "__all__"
+
+            widgets = {
+                'name': forms.TextInput(attrs={
+                    'class': 'form-control',
+                    'placeholder': 'enter a new category',
+                    'autocomplete': 'off',
+                })
+            }
+
+Aque utilizaremos un formulario basado en nuestro modelo Category, para ello especificaremos todos los detalles que contendra
 
