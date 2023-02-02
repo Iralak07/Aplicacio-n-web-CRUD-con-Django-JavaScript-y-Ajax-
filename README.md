@@ -527,7 +527,7 @@ Como se puede observar dentro de la variable "form" colocamos nuestro formulario
         </div>
       </div>
       
-En nuestro archivo html, en el modals que se muestra una vez que presionamos el boton creamos una etiqueta <form></form> dentro del cual, agregamos el csrf_token y nuestro formulario {{ from.name }}  y la etiqueta label, dentro del bloque form, asimismo el boton "save chanbes", lo convertimos al tipo submit para poder enviar nuestro formulario a nuestro back-end. Luego en nuestro archivo funciones.js agregamos las siguientes lineas de codigo. -
+En nuestro archivo html, en el modals que se muestra una vez que presionamos el boton creamos una etiqueta <form></form> dentro del cual, agregamos el csrf_token y nuestro formulario {{ from.name }}  y la etiqueta label, dentro del bloque form, asimismo el boton "save changes", lo convertimos al tipo submit para poder enviar nuestro formulario a nuestro back-end. Luego en nuestro archivo funciones.js agregamos las siguientes lineas de codigo. -
 
         $('#btnCreateCategory').on('click', function(){
             $('#modal_category').modal('show');
@@ -535,4 +535,10 @@ En nuestro archivo html, en el modals que se muestra una vez que presionamos el 
             $('#modal_title').text('Create New Category')
         });
         
-Aqui, agregamos un $('#modal_category form')[0].reset(); lo que hace es eliminar cualquier registro dentro de nuestro formulario, esto en razon de que al escribir dentro de un formulario ubicado en un modals y por alguna razon 
+Aqui, agregamos un $('#modal_category form')[0].reset(); lo que hace es eliminar cualquier registro dentro de nuestro formulario, esto en razon de que al escribir dentro de un formulario ubicado en un modals y cerrarlo posteriormente, el campo rellenado permanece con lo escrito anteriormente, por lo que con esta funcion lo que hacemos es limpiar dicho campo. Luego con $('#modal_title').text('Create New Category') agregamos un titulo a nuestro modal que variara segun estemos creando un nuevo registro o editando un registro, esto lo veremos posteriormente. -
+
+Vayamos a nuestra url http://127.0.0.1:8000/blog/listCategory/ y presionemos el boton Register Category, el resultado seria esto. 
+
+![formulario_modal](https://user-images.githubusercontent.com/99599597/216394161-43bb6c62-8fc6-4947-aa60-679220f445b0.png)
+
+Nos aparece el modals de boostrap, con un campo de formulario en el que podemos enviar con el boton "save changes", el cual veremos en la proxima parte. -
