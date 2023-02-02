@@ -465,5 +465,74 @@ Para ello creemos un archivo forms.py dentro del directorio de nuestra aplicacio
                 })
             }
 
-Aque utilizaremos un formulario basado en nuestro modelo Category, para ello especificaremos todos los detalles que contendra
+Aqui utilizaremos un formulario basado en nuestro modelo Category, esto implica que se utiliza las caracteristicas de nuestro modelo para crear el formulario y asi ahorrar bastente tiempo y codigo. La documentacion oficial lo pueden encontrar en https://docs.djangoproject.com/en/4.1/topics/forms/modelforms/#modelform. 
 
+Luego debemos importarlo en nuestro arhivo views.py a fin de poder renderizarlo en nuestra vista de la siguiente manera.
+
+    from django.shortcuts import render
+    from .models import Category
+    from django.http import JsonResponse
+    from .forms import CategoryForm
+
+    def listCategory(request):
+        data = {}
+        if request.method == 'GET':
+            template_name = 'listCategory.html'
+            cat = Category.objects.all()
+            form = CategoryForm()
+
+            return render(
+                request,
+                template_name,
+                {
+                    'form':form,
+                })
+
+        if request.method == "POST":
+            try:
+                action = request.POST['action']
+                if action == 'search':
+                    data = list(Category.objects.all().values_list())
+                    lista = Category.objects.all().values_list()
+                    return JsonResponse(data, safe=False)
+            except Exception as e:
+                data['error'] = str(e)
+                return JsonResponse(data, safe=False)
+
+Como se puede observar dentro de la variable "form" colocamos nuestro formulario compuesto de un capo "name", el cual es renderizado a nuestro archivo html a fin de poder utilizarlo dentro de nuestro modal.
+
+    <div class="modal fade" id="modal_category" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modal_title"></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="form-group">
+              <form method="POST" action=".">
+                {% csrf_token %}
+                  <div class="modal-body">
+                        <label>Category Name</label>
+                        {{form.name}}
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                  </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+En nuestro archivo html, en el modals que se muestra una vez que presionamos el boton creamos una etiqueta <form></form> dentro del cual, agregamos el csrf_token y nuestro formulario {{ from.name }}  y la etiqueta label, dentro del bloque form, asimismo el boton "save chanbes", lo convertimos al tipo submit para poder enviar nuestro formulario a nuestro back-end. Luego en nuestro archivo funciones.js agregamos las siguientes lineas de codigo. -
+
+        $('#btnCreateCategory').on('click', function(){
+            $('#modal_category').modal('show');
+            $('#modal_category form')[0].reset();
+            $('#modal_title').text('Create New Category')
+        });
+        
+Aqui, agregamos un $('#modal_category form')[0].reset(); lo que hace es eliminar cualquier registro dentro de nuestro formulario, esto en razon de que al escribir dentro de un formulario ubicado en un modals y por alguna razon 
