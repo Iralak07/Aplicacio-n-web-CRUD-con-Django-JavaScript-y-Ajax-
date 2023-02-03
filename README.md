@@ -541,4 +541,6 @@ Vayamos a nuestra url http://127.0.0.1:8000/blog/listCategory/ y presionemos el 
 
 ![formulario_modal](https://user-images.githubusercontent.com/99599597/216394161-43bb6c62-8fc6-4947-aa60-679220f445b0.png)
 
-Nos aparece el modals de boostrap, con un campo de formulario en el que podemos enviar con el boton "save changes", el cual veremos en la proxima parte. -
+Nos aparece el modals de boostrap, con un campo de formulario en el que podemos enviar con el boton "save changes", el cual veremos en la proxima parte. 
+
+OCTAVA PARTE: En esta parte enviaremos el formulario creado a nuestro back-end a fin de que lo procese, valide y en su caso guarde. 
