@@ -543,4 +543,35 @@ Vayamos a nuestra url http://127.0.0.1:8000/blog/listCategory/ y presionemos el 
 
 Nos aparece el modals de boostrap, con un campo de formulario en el que podemos enviar con el boton "save changes", el cual veremos en la proxima parte. 
 
-OCTAVA PARTE: En esta parte enviaremos el formulario creado a nuestro back-end a fin de que lo procese, valide y en su caso guarde. 
+OCTAVA PARTE: En esta parte enviaremos el formulario creado a nuestro back-end a fin de que lo procese, valide y en su caso guarde. En nuestro archivo funciones.js creamos lo siguiente.
+
+        $('form').on('submit',function(e){
+            e.preventDefault()
+            var data = $('form').serializeArray()
+            var csrftoken = data[0].value
+            $.ajax(
+                {
+                  headers: {'X-CSRFToken': csrftoken},
+                  url : window.location.pathname,
+                  type: "POST",
+                  data : data,
+                })
+                  .done(function(data) {
+                    if(!data['error']){
+                        $('#modal_category').modal('hide');
+                        $('#table_id').DataTable().ajax.reload();
+                        return false
+                    }else{
+                        alert(data)
+                    }
+                  })
+                  .fail(function(data) {
+                    alert( "error" );
+                  })
+                  .always(function(data) {
+                  });
+        })
+
+Con  $('form').on('submit',function(e){} lo que hacemos es capturar el evento submit, una vez rellenado nuestro campo name de nuestra categoria nueva, luego con e.preventDefault(), lo que hacemos es cancelar el evento submit y evitar que se envie el formulario a nuestro back-end, esto lo hacemos necesariamente para controlar el evento y poder enviar nuestro formulario a traves de ajax. Con var data = $('form').serializeArray() lo que hacemos es tomar los valores de nuestro formulario y crear un array con ellos, esto lo podemos constatar si realizamos un console.log(data) y  var csrftoken = data[0].value que toma el valor del {% csrf_token %} para enviarlo conjuntamente con la peticion y que nos nos arroje un error en el lado del servidor.
+
+Posteriormente con $.ajax({}) realizamos la peticion a nuestro servidor, enviado los datos necesarios para que lo procese, al igual que hicimos con la peticion en nuestro DataTables, enviamos { headers: {'X-CSRFToken': csrftoken}, url : window.location.pathname, type: "POST", data : data,}). Podes leer mas visitando http://www.falconmasters.com/jquery/peticiones-ajax-jquery/
