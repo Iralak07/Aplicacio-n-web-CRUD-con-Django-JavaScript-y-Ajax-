@@ -591,7 +591,15 @@ En nuestro archvio html, especificamente dentro del <form></form> agregamos un i
                       </div>
          </form>
          
-Agregamos la siguiente linea, <input type="hidden" name="action" value="">, por que motivo?,  este input es enviado junto con nuestro formulario, por lo tanto recuerdan que en nuestra solicitud en el DataTables con ajax habiamos enviado un input oculto con el nombre de action y con un valor de "search", esto a fin de que dentro de nuestra vista al llegar la solicitud comparemos el valor de action, si corresponde a "search", nos devolvera la lista completa de registros existentes en nuestra base de datos, si corresponde a otro valor, como por ejemplo "create", "edit" o "delete", realizaria otra accion creando un nuevo registro, editando un registro o eliminandolo. Vayamos a nuestro views.py. 
+Agregamos la siguiente linea, <input type="hidden" name="action" value="">, por que motivo?,  este input es enviado junto con nuestro formulario, por lo tanto recuerdan que en nuestra solicitud en el DataTables con ajax habiamos enviado un input oculto con el nombre de action y con un valor de "search", esto a fin de que dentro de nuestra vista al llegar la solicitud comparemos el valor de action, si corresponde a "search", nos devolvera la lista completa de registros existentes en nuestra base de datos, si corresponde a otro valor, como por ejemplo "create", "edit" o "delete", realizaria otra accion creando un nuevo registro, editando un registro o eliminandolo. Rellenemos nuestro formulario y hagamos click en "save changes", ahora fijemosnos en la consola cuales son los datos enviados a nuestro servidor.
+
+![datos_del_formulario](https://user-images.githubusercontent.com/99599597/216625640-50918afb-f58b-41e1-957c-b7c4a0494c65.png)
+
+    csrfmiddlewaretoken	"GpvqDLGfbUyFN5F0Q2hFEHP2oNQdrHbHnDU69S3IOoieyeBJX3MYPXwdgBxtWLoS"
+    action	"create"
+    name	"Django"
+
+Vemos que se ha enviado estos datos, el action nos servira como dijimos anteriormente para verificar que proceso realizaremos en el back-end y el name contine el nuevo registro que sera procesado, verificado y en su caso guardado, decimos en su caso, ya que nuestro modelo name solo permite la existencia de registros unicos no repetidos, esto lo veremos mas claramente en seguidamente. -
 
     def listCategory(request):
         data = {}
@@ -615,3 +623,4 @@ Agregamos la siguiente linea, <input type="hidden" name="action" value="">, por 
                 data['error'] = str(e)
                 return JsonResponse(data, safe=False)
 
+Aqui en nuestra vista, lo que primero hacemos es comparar si action corresponde con "create", en caso de que sea true, dentro de la variable form, llamamos a CategoryForm y le pasamos como parametro el request.POST que contiene nuestro formulario, seguidamente verificamos si el formulario es valido con "is_valid()", si lo fuere guarda el registro en la base de datos con form.save() y retorna un JsonResponse(data, safe=False), con un data vacio, en caso contrario que "is_valid() " se False o el formulario no sea valido por existir un registro con el mismo nombre exactamente, guardamos dentro de un diccionario data el error en nuestro caso seria la existencia del mismo registro y lo devolvemos con JsonResponse para que podamos mostrarlo en nuestra interfaz. 
