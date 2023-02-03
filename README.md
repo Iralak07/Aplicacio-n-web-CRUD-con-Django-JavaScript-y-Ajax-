@@ -624,3 +624,5 @@ Vemos que se ha enviado estos datos, el action nos servira como dijimos anterior
                 return JsonResponse(data, safe=False)
 
 Aqui en nuestra vista, lo que primero hacemos es comparar si action corresponde con "create", en caso de que sea true, dentro de la variable form, llamamos a CategoryForm y le pasamos como parametro el request.POST que contiene nuestro formulario, seguidamente verificamos si el formulario es valido con "is_valid()", si lo fuere guarda el registro en la base de datos con form.save() y retorna un JsonResponse(data, safe=False), con un data vacio, en caso contrario que "is_valid() " se False o el formulario no sea valido por existir un registro con el mismo nombre exactamente, guardamos dentro de un diccionario data el error en nuestro caso seria la existencia del mismo registro y lo devolvemos con JsonResponse para que podamos mostrarlo en nuestra interfaz. 
+
+
