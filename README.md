@@ -592,3 +592,26 @@ En nuestro archvio html, especificamente dentro del <form></form> agregamos un i
          </form>
          
 Agregamos la siguiente linea, <input type="hidden" name="action" value="">, por que motivo?,  este input es enviado junto con nuestro formulario, por lo tanto recuerdan que en nuestra solicitud en el DataTables con ajax habiamos enviado un input oculto con el nombre de action y con un valor de "search", esto a fin de que dentro de nuestra vista al llegar la solicitud comparemos el valor de action, si corresponde a "search", nos devolvera la lista completa de registros existentes en nuestra base de datos, si corresponde a otro valor, como por ejemplo "create", "edit" o "delete", realizaria otra accion creando un nuevo registro, editando un registro o eliminandolo. Vayamos a nuestro views.py. 
+
+    def listCategory(request):
+        data = {}
+        if request.method == 'GET':...
+
+        if request.method == "POST":
+            try:
+                action = request.POST['action']
+                if action == 'search':
+                    data = list(Category.objects.all().values_list())
+                    return JsonResponse(data, safe=False)
+                elif action ==  'create':
+                    form = CategoryForm(request.POST)
+                    if form.is_valid():
+                        form.save()
+                        return JsonResponse(data, safe=False)
+                    else:
+                        data['error'] = f"Category {request.POST['name']} already exists"
+                        return JsonResponse(data, safe=False)
+            except Exception as e:
+                data['error'] = str(e)
+                return JsonResponse(data, safe=False)
+
