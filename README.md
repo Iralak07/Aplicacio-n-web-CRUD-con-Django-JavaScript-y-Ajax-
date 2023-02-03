@@ -574,4 +574,21 @@ OCTAVA PARTE: En esta parte enviaremos el formulario creado a nuestro back-end a
 
 Con  $('form').on('submit',function(e){} lo que hacemos es capturar el evento submit, una vez rellenado nuestro campo name de nuestra categoria nueva, luego con e.preventDefault(), lo que hacemos es cancelar el evento submit y evitar que se envie el formulario a nuestro back-end, esto lo hacemos necesariamente para controlar el evento y poder enviar nuestro formulario a traves de ajax. Con var data = $('form').serializeArray() lo que hacemos es tomar los valores de nuestro formulario y crear un array con ellos, esto lo podemos constatar si realizamos un console.log(data) y  var csrftoken = data[0].value que toma el valor del {% csrf_token %} para enviarlo conjuntamente con la peticion y que nos nos arroje un error en el lado del servidor.
 
-Posteriormente con $.ajax({}) realizamos la peticion a nuestro servidor, enviado los datos necesarios para que lo procese, al igual que hicimos con la peticion en nuestro DataTables, enviamos { headers: {'X-CSRFToken': csrftoken}, url : window.location.pathname, type: "POST", data : data,}). Podes leer mas visitando http://www.falconmasters.com/jquery/peticiones-ajax-jquery/
+Posteriormente con $.ajax({}) realizamos la peticion a nuestro servidor, enviando los datos necesarios para que lo procese, al igual que  lo hicimos con la peticion en nuestro DataTables, enviamos { headers: {'X-CSRFToken': csrftoken}, url : window.location.pathname, type: "POST", data : data,}), donde con data: data, estamos enviando nuestro formulario. Podes leer mas visitando http://www.falconmasters.com/jquery/peticiones-ajax-jquery/.
+
+En nuestro archvio html, especificamente dentro del <form></form> agregamos un input de tipo hidden, es decir oculto y con el nombre de action que tiene un valor vacio por el momento, fijemosnos.
+
+        <form method="POST" action=".">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="">
+                      <div class="modal-body">
+                            <label>Category Name</label>
+                            {{form.name}}
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                      </div>
+         </form>
+         
+Agregamos la siguiente linea, <input type="hidden" name="action" value="">, por que motivo?,  este input es enviado junto con nuestro formulario, por lo tanto recuerdan que en nuestra solicitud en el DataTables con ajax habiamos enviado un input oculto con el nombre de action y con un valor de "search", esto a fin de que dentro de nuestra vista al llegar la solicitud comparemos el valor de action, si corresponde a "search", nos devolvera la lista completa de registros existentes en nuestra base de datos, si corresponde a otro valor, como por ejemplo "create", "edit" o "delete", realizaria otra accion creando un nuevo registro, editando un registro o eliminandolo. Vayamos a nuestro views.py. 
