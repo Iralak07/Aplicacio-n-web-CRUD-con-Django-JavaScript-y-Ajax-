@@ -633,4 +633,18 @@ Vemos que se ha registrado correctamente nuestra categoria, con un nombre y un i
 
 ![categoria_existente_error](https://user-images.githubusercontent.com/99599597/216768957-ddaecfac-36ee-4292-bb79-cced607597af.png)
 
+Aqui podemos ver como se ha generado un alert con un mensaje "Category Django already exists", esto lo podemos corroborar en nuestro views.py en data['error'] = f"Category {request.POST['name']} already exists", como consecuencia de que el registro "Django" ya existe en la base de datos, y lo colocamos en el diccionario data el cual lo retornamos con JsonResponse(data, safe=False). En nuestro archivo funciones.js se ve de la siguiente manera
+
+            .done(function(data) {
+                    if(!data['error']){
+                        $('#modal_category').modal('hide');
+                        $('#table_id').DataTable().ajax.reload();
+                        return false
+                    }else{
+                        alert(data.error)
+                    }
+
+Con .done(function()), lo que hacemos es verificar si el data retornado no contiene un 'error', si es true, ocultamos el modal y actulizamos nuestro DataTables, en caso contrario si contiene un 'error', nos arroja un alert(data.error) con el mensaje que le hemos pasado en nuestro back-end. Este mensaje lo podemos personalizar el mensaje de alerta visiten el sitio web https://sweetalert2.github.io/, es muy facil de implementar, por cuestiones de tiempo en este tutorial no lo mostrare.
+
+
 
