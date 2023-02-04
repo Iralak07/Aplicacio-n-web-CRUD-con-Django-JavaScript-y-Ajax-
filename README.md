@@ -623,6 +623,14 @@ Vemos que se ha enviado estos datos, el action nos servira como dijimos anterior
                 data['error'] = str(e)
                 return JsonResponse(data, safe=False)
 
-Aqui en nuestra vista, lo que primero hacemos es comparar si action corresponde con "create", en caso de que sea true, dentro de la variable form, llamamos a CategoryForm y le pasamos como parametro el request.POST que contiene nuestro formulario, seguidamente verificamos si el formulario es valido con "is_valid()", si lo fuere guarda el registro en la base de datos con form.save() y retorna un JsonResponse(data, safe=False), con un data vacio, en caso contrario que "is_valid() " se False o el formulario no sea valido por existir un registro con el mismo nombre exactamente, guardamos dentro de un diccionario data el error en nuestro caso seria la existencia del mismo registro y lo devolvemos con JsonResponse para que podamos mostrarlo en nuestra interfaz. 
+Aqui en nuestra vista, lo que primero hacemos es comparar si action corresponde con "create", en caso de que sea true, dentro de la variable form, llamamos a CategoryForm y le pasamos como parametro el request.POST que contiene nuestro formulario, seguidamente verificamos si el formulario es valido con "is_valid()", si lo fuere guarda el registro en la base de datos con form.save() y retorna un JsonResponse(data, safe=False), con un data vacio, en caso contrario si "is_valid() " es False, guardamos dentro de un diccionario data el error en nuestro caso seria la existencia del mismo registro y lo devolvemos con JsonResponse para que podamos mostrarlo en nuestra interfaz. 
+
+En nuestro caso al registrar un nombre valido (es decir no repetido en nuestra base de datos), lo carga y se actuliza nuestra tabla con $('#table_id').DataTable().ajax.reload(); dentro de nuestro archivo funciones.js
+
+![dataTable_cargado](https://user-images.githubusercontent.com/99599597/216768570-432c4ffb-d067-4bf4-97e9-a436fabf608d.png)
+
+Vemos que se ha registrado correctamente nuestra categoria, con un nombre y un id, ahora carguemos un registro existente a fin de verificar si nos arroja el error que hemos configurado en nuestro back-end. -
+
+![categoria_existente_error](https://user-images.githubusercontent.com/99599597/216768957-ddaecfac-36ee-4292-bb79-cced607597af.png)
 
 
