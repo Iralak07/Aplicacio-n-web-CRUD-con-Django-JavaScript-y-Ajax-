@@ -646,5 +646,5 @@ Aqui podemos ver como se ha generado un alert con un mensaje "Category Django al
 
 Con .done(function()), lo que hacemos es verificar si el data retornado no contiene un 'error', si es true, ocultamos el modal y actulizamos nuestro DataTables, en caso contrario si contiene un 'error', nos arroja un alert(data.error) con el mensaje que le hemos pasado en nuestro back-end. Este mensaje lo podemos personalizar el mensaje de alerta visiten el sitio web https://sweetalert2.github.io/, es muy facil de implementar, por cuestiones de tiempo en este tutorial no lo mostrare.
 
-
+NOVENA PAR
 
