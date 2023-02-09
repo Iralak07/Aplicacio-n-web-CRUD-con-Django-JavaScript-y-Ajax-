@@ -646,5 +646,48 @@ Aqui podemos ver como se ha generado un alert con un mensaje "Category Django al
 
 Con .done(function()), lo que hacemos es verificar si el data retornado no contiene un 'error', si es true, ocultamos el modal y actulizamos nuestro DataTables, en caso contrario si contiene un 'error', nos arroja un alert(data.error) con el mensaje que le hemos pasado en nuestro back-end. Este mensaje lo podemos personalizar el mensaje de alerta visiten el sitio web https://sweetalert2.github.io/, es muy facil de implementar, por cuestiones de tiempo en este tutorial no lo mostrare.
 
-NOVENA PARTE: Hasta ahora hemos cargado nuestro DataTables con una peticion asincrona con Ajax a nuestro back-end, asi tambien hemos creado un registro utilizando formulario ubicado en un modals con boostrap y la peticion lo hemos realizado con Ajax a nuestro servidor para que lo procese, valide, guarde en su caso o arroje un mensaje de error.  Nuestro CRUD (Create, Read, Update, Delete) se va completando de apoco, hemos realizado los dos primeros (Create y Read), nos faltaria (Update y Delete), para esto creare dos 
+NOVENA PARTE: Hasta ahora hemos cargado nuestro DataTables con una peticion asincrona con Ajax a nuestro back-end, asi tambien hemos creado un registro utilizando formulario ubicado en un modals con boostrap y la peticion lo hemos realizado con Ajax a nuestro servidor para que lo procese, valide, guarde en su caso o arroje un mensaje de error.  Nuestro CRUD (Create, Read, Update, Delete) se va completando de apoco, hemos realizado los dos primeros (Create y Read), nos faltaria (Update y Delete). Tanto el editar como el eliminar una categoria (lo los registros que existen en nuestra base de datos y son mostrado en la tabla con Datatables), necesitamos seleccionar dicho registro con el que podamos editarlo y eliminarlo posteriormente, para ello utilizaremos el renderizado de los datos que son mostrado dentro de nuestro tabla a fin de que nos de la posibilidad de incorporar dos botones a cada fila con las opciones de editar y eliminar. 
+
+Que es el renderizado? vayamos a la pagina oficial de DataTables en https://datatables.net/reference/option/columns.render en el que podremos ver ejemplos claros como utilizar el renderizado de datos que son utilizados en nuestra tabla. 
+
+Hasta el momento nuestra tabla consta de 2 columnas, una para el ID y otra para el nombre de nuestra categoria, nos faltaria agregar una columna mas, en el que nos de la opcion de seleccionar el registro ubicado en la fila y editarlo o eliminarlo en su caso, por lo tanto nuestra tabla quedaria de la siguiente manera.
+
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Name</th>
+                    <th>Opciones</ht>
+                </tr>
+            </thead>
+            
+Le hemos agregado una columna llamada opciones, en el cual debemos procesar y modificar los datos que se mostraran en el, para ello como dijimos anteriormente utilizaremos el poder de DataTables y el renderizado de columnas, por lo tanto vayamos a nuestro archivo funciones.js y modifiquemoslo para que podamos renderizar a nuestra tabla los botones editar y eliminar.
+
+            $('#table_id').DataTable( {
+                ajax:{
+                    headers: {'X-CSRFToken': csrftoken},
+                    url: window.location.pathname,
+                    type: 'POST',
+                    data: {
+                        action: 'search',
+                    },
+                    dataSrc: ""
+                },
+                columns: [
+                    {"data": [0]},
+                    {"data": [1]},
+                    {"data": [1]},
+                ],
+                "columnDefs":[
+                    {
+                        "targets": 2,
+                        "render": function(data,type,row){
+                            var button = "<button>Edit</button>"
+                            button += "<button>Delete</button>"
+                            return button
+                        }
+                    }
+                ]
+            } );
+
+Vemos como en la opcion columns hemos agregado un {"data": [1]}, esto es en razon de que hemos agregado una columna a nuestro datatable, por lo tanto debemos rellenarlo con un dato, en este caso es el mismo que el nombre de categoria, pero aqui viene lo interesante, mas abajo le hemos aagregado un columnDefs: [], con esto podemos procesar y modificar los datos que se muestran en cada columna de nuestra tabla, pueden observar como en "targets" hemos puesto el numero 2, esto en razon que la columna es una matriz [id,name,opciones] en el que el id se encuentra en la posicion numero 0 de la matriz, el name en la posicion numero 1 y opciones en la posicion numero 2, es por esto que el objetivo o targets al cual apuntamos es a la columna opciones, luego realizamos un render con un funcion con tres parametros (data, type, row), dentro de la funcion creamos una variable button el cual contine un texto plano "<button>Edit</button>", el cual una vez retornado se convierte en un boton en nuestra tabla.
 
