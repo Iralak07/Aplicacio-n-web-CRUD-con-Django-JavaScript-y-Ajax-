@@ -833,10 +833,55 @@ Aqui practicamente utilizamos el codigo ya escrito anteriormente en la parte don
  Como se puede observer en la imagen precedente, tenemos el nombre de la categoria que queremos editar dentro del input como asi tambien todos los demas datos mencionados anteriormente, ahora debemos modificar el registro y hacer un submit para enviarlo a nuestra vista para que lo procese, valide y lo guarde en su caso.
   
   
-
+DECIMA SEGUNDA PARTE: Ya hemos obtenido los datos de nuestro registro que necesitamos modificar, lo hemos mostrado en la ventana modals, hemos agregado el id  y la accion que queremos realizar, ahora nos queda enviarlo a nuestra vista en la cual vamos a comparar si el valor del input action es igual a 'edit', para que luego podamos extrar el objeto que queremos modificar con el id enviado con nustro formulario dentro de una variable objeto, para luego pasarlo como parametro de una instancia a nuestro CategoryForm junto el request.POST, luego verificamos si el formulario enviado es valido y en caso afirmativo lo guardamos y en caso contrario enviamos un mensaje de error tal como lo hicimos con el create category. Nuestra vista luce de la siguiente manaera.
   
+       def listCategory(request):
+          data = {}
+          if request.method == 'GET':
+              template_name = 'listCategory.html'
+              form = CategoryForm()
 
+              return render(
+                  request,
+                  template_name,
+                  {
+                      'form':form,
+                  })
+
+          if request.method == "POST":
+              try:
+                  action = request.POST['action']
+                  if action == 'search':
+                      data = list(Category.objects.all().values_list())
+                      return JsonResponse(data, safe=False)
+                  elif action ==  'create':
+                      form = CategoryForm(request.POST)
+                      if form.is_valid():
+                          form.save()
+                          return JsonResponse(data, safe=False)
+                      else:
+                          data['error'] = f"Category {request.POST['name']} already exists"
+                          return JsonResponse(data, safe=False)
+                  elif action == 'edit':
+                      pk = request.POST['id']
+                      objeto = Category.objects.get(pk=pk)
+                      form = CategoryForm(request.POST, instance=objeto)
+                      if form.is_valid():
+                          form.save()
+                          return JsonResponse(data, safe=False)
+                      else:
+                          data['error'] = f"Category {request.POST['name']} already exists"
+                          return JsonResponse(data, safe=False)
+              except Exception as e:
+                  data['error'] = str(e)
+                  return JsonResponse(data, safe=False)
   
+  
+En el caso de no instanciar nuestro registro y no pasarlo a la CategoryForm(request.POST, instance=objeto), lo que hara es crear un nuevo registro en el caso que hemos modificado el nombre de la categoria en nuestra interfaz y nos arrojaria un error de f"Category {request.POST['name']} already exists" es decir que ya existe la categoria en el caso de ingresar una categoria existente en nuestra base de datos.  Si instanciamos correctamente tal como lo hemos hecho, al modificar un registro en nuestra interfaz y enviarlo a nuestra vista, este lo guardara modificando el registro en la base de datos sin alterar el id o crear un id nuevo. -
+  
+Ahora unicamente nos resta eliminar un registro de nuestra base de datos desde nuestra interfaz, para ello ya hemos creado previamente el boton delete el cual lo renderizamos a nuestro DataTables.
+  
+DECIMO TERCERA PARTE: 
 
 
   
