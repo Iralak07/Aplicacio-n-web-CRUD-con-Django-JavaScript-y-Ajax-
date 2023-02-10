@@ -825,7 +825,15 @@ En nuestro archivo funciones.js en el bloque de codigo que creamos con el fin de
           })
       });
 
-Aqui practicamente utilizamos el codigo ya escrito anteriormente en la parte donde llamamos al modals co el boton Register Category, con algunas modificaciones, le hemos agregado al input action el valor de edit, al input name le hemos asignado el valor data[1] que corresponde a la categoria seleccionada y obtenida previamente, asi tambien hemos puesto un titulo 'Edit Category'. 
+Aqui practicamente utilizamos el codigo ya escrito anteriormente en la parte donde llamamos al modals haciendo click el boton Register Category, con algunas modificaciones, le hemos agregado al atributo action del input el valor de edit, al input name le hemos asignado el valor data[1] que corresponde a la categoria seleccionada y obtenida previamente, asi tambien hemos puesto un titulo 'Edit Category'.
+  
+  ![editando_con_modals](https://user-images.githubusercontent.com/99599597/218191499-1058dbeb-3658-4bc1-aa8e-c813a54ab203.png)
+
+  
+ Como se puede observer en la imagen precedente, tenemos el nombre de la categoria que queremos editar dentro del input como asi tambien todos los demas datos mencionados anteriormente, ahora debemos modificar el registro y hacer un submit para enviarlo a nuestra vista para que lo procese, valide y lo guarde en su caso.
+  
+  
+
   
 
   
