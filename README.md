@@ -742,9 +742,10 @@ Archivo funciones.js
             console.log(data);
         })
         
-Con el objetivo de tomar el evento click en el boton editar de cada fila, necesitamos precisar el evento que queremos tomar para ello apuntamos al id de nuestra tabla especificamente en el tbody, en donde estan las filas con los datos de nuestro registro, al realizar click, en el boton con la relacion edit, en la tr o fila de tabla se dispara una funcion, en donde con var data es igual a los datos existentes en dicha fila, esto lo podemos encontrar como ejemplo en https://datatables.net/examples/ajax/null_data_source.html, luego hacemos un console.log de data para ver que nos muestra al presionar el boton edit.
+Con el objetivo de tomar el evento click en el boton editar de cada fila, necesitamos precisar el evento que queremos tomar para ello apuntamos al id de nuestra tabla especificamente en el tbody, en donde estan las filas con los datos de nuestro registro, al realizar click, en el boton con la relacion edit, en la tr o fila de tabla se dispara una funcion, en donde con var data es igual a los datos existentes en dicha fila, esto lo podemos encontrar como ejemplo en https://datatables.net/examples/ajax/null_data_source.html, luego hacemos un console.log de data para ver que nos muestra al presionar el boton edit. Acuerdense que para esto necesitamos crear una varibale 
 
+![recuperando_datos_de_DataTables](https://user-images.githubusercontent.com/99599597/218106483-da41a7b5-e374-456d-a1f2-db45efacc2e4.png)
 
-
+Aqui podemos observar como hemos recuperado los datos de nuestra tabla al hacer click en el boton click en una fila determianda, 
 
 
