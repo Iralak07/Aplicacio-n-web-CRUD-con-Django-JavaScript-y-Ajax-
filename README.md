@@ -699,7 +699,51 @@ Hemos renderizado los datos que se muestran en la columna opciones, colocando do
 
 DECIMA PARTE: una vez renderizado nuestros botones de editar y eliminar dentro de nuestra tabla,  vamos a comenazar la tarea de editar un registro al pulsar click en el boton edit, que abra una ventana modals y que muestre los datos de la fila seleccionada. Para ello necesitamos tomar el evento click realizado en el boton edit, buscar los datos en la fila correspondinete, guardarlos en una variable, mostrarlo en la ventana modal y poder editarlo, una vez editado realizar un submit que enviara el nuevo dato, si hubo algun cambio a nuestro back-end para que en las views.py lo procese, lo verifique y lo guarde en su caso. 
 
+Primeramente tenemos que capturar el evento click en el boton edit de nuestra DataTables, para ello necesitamos agregarle al boton un atributo para que nos de la posiblidad de capturar el evento al hacer click en el mismo, para ello necesitamos realizar lo siguiente dentro de nuestro archvio funciones.js, en el renderizado de los botones.
+
+        $(document).ready( function () {
+            var table;
+            var csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+            table = $('#table_id').DataTable( {
+                ajax:{
+                    headers: {'X-CSRFToken': csrftoken},
+                    url: window.location.pathname,
+                    type: 'POST',
+                    data: {
+                        action: 'search',
+                    },
+                    dataSrc: ""
+                },
+                columns: [
+                    {"data": [0]},
+                    {"data": [1]},
+                    {"data": [1]},
+                ],
+                "columnDefs":[
+                    {
+                        "targets": 2,
+                        "render": function(data,type,row){
+                            var button = "<button rel='edit'>Edit</button>"
+                            button += "<button>Delete</button>"
+                            return button
+                        }
+                    }
+                ]
+            } );
+
+Como se daran cuenta hemos creado una variable table que es igual a nuestra tabla de DataTables, esto lo utilizaremos posteriormente, en la parte inferior del codigo en el columnDefs hemos puesto en la variable button un rel='edit', esto a fin de capturar el evento click, no le hemos puesto un identificador id='edit' en razon de que los ids son unicos y no nos funcionaria. Una vez hecho esto guardemos y ejecutemoslo a fin de inspeccionar el elemento y verificar que se ha renderizado correctamente. 
+
+Ahora vien, necesitamos capturar el evento click y los datos que corresponden a dicha fila, para ello dentro de nuestro archivo funciones.js agreguemos las siguientes lineas de codigo, que lo tratare de explicar lo mas sencillo posible. -
+
 Archivo funciones.js
+
+        $('#table_id tbody').on('click', 'button[rel="edit"]', 'tr', function(){
+            var data = table.row($(this).parents('tr')).data();
+            console.log(data);
+        })
+        
+Con el objetivo de tomar el evento click en el boton editar de cada fila, necesitamos precisar el evento que queremos tomar para ello apuntamos al id de nuestra tabla especificamente en el tbody, en donde estan las filas con los datos de nuestro registro, al realizar click, en el boton con la relacion edit, en la tr o fila de tabla se dispara una funcion, en donde con var data es igual a los datos existentes en dicha fila, esto lo podemos encontrar como ejemplo en https://datatables.net/examples/ajax/null_data_source.html, luego hacemos un console.log de data para ver que nos muestra al presionar el boton edit.
+
 
 
 
