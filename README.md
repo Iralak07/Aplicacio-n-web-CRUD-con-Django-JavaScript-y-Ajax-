@@ -787,7 +787,49 @@ A medida que hacemos click en una fila determianda el row va ir variando dependi
 
 Obtuvimos los datos de nuestra tabla de la fila que deseamos modificar, en este caso, esta es la manera mas efectiva para obtener los datos ya que no tendremos problemas al reducir el ancho de nuestra pagina. 
  
-DECIMA PRIMERA PARTE: Una vez obtenido los datos de nuestra fila y guardado en la variable data, nos queda abrir el modal para poder agregar dentro del mismo el formulario con los datos provenientes del mismo y volver a enviarlo a nuestro back-end para que lo procese, valide y lo guarde en su caso, para ello en nuestro archivo html necesitamos crear un nuevo input con el atributo hidden para que este oculto, esto en razon de que necesitamos enviar junto con el formulario el id perteneciente a la categoria la cual queremos editar, ya que en nuestro archivo views.py necesitamos instanciar el objeto a fin de pasarlo a nuestro CategoryForm junto con el registro modificado para que este lo valide.
+DECIMA PRIMERA PARTE: Una vez obtenido los datos de nuestra fila y guardado en la variable data, nos queda abrir el modal para poder agregar dentro del mismo el formulario con los datos provenientes del mismo y volver a enviarlo a nuestro back-end para que lo procese, valide y lo guarde en su caso, para ello en nuestro archivo html necesitamos crear un nuevo input dentro del modals con el atributo hidden para que se oculte, esto en razon de que necesitamos enviar junto con el formulario el id perteneciente a la categoria la cual queremos editar, ya que en nuestro archivo views.py necesitamos instanciar el objeto a fin de pasarlo a nuestro CategoryForm junto con el registro modificado para que este lo valide.
   
+Primeramente vayamos a nuestro archivo listCategory.html que quedara de la siguiente manera.
+  
+             <div class="form-group">
+              <form method="POST" action=".">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="">
+                <input type="hidden" name="id" value="">
+                  <div class="modal-body">
+                        <label>Category Name</label>
+                        {{form.name}}
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                  </div>
+              </form>
+            </div>
+  
+
+Vemos como hemos agregado un input con el name igual a 'id', con un valor que es igual a una cadena vacia, esto para agregarle posteriormente el valor del id de nuestra categoria que hayamos de seleccionar con la opcion del boton edit. Arriba del mismo se encuentra tambien el input con un valor vacio, que como ya sabemos le pasaremos una accion para que podamos enviarlo a nuestra vista y que este a traves de condiconales realice la accion que corresponde en este caso el de editar un registro.
+  
+En nuestro archivo funciones.js en el bloque de codigo que creamos con el fin de obtener los datos de la fila seleccionada con el boton edit, agreguemos las siguintes lineas de codigo.
+  
+          $('#table_id tbody').on('click', 'button[rel="edit"]', 'tr', function(){
+              var td = $(this).closest('td, li');
+              var tr = table.cell(td).index()
+              var data = table.row(tr.row).data()
+              $('#modal_category').modal('show');
+              $('#modal_category form')[0].reset();
+              $('#modal_title').text('Edit Category');
+              $('input[name="action"]').val('edit');
+              $('#id_name').val(data[1]);
+              $('input[name="id"]').val(data[0]);
+          })
+      });
+
+Aqui practicamente utilizamos el codigo ya escrito anteriormente en la parte donde llamamos al modals co el boton Register Category, con algunas modificaciones, le hemos agregado al input action el valor de edit, al input name le hemos asignado el valor data[1] que corresponde a la categoria seleccionada y obtenida previamente, asi tambien hemos puesto un titulo 'Edit Category'. 
+  
+
+  
+
+
   
 
