@@ -748,6 +748,6 @@ A nuestra variable table.row() le pasamos la posicion actual de la fila con $(th
 
 ![recuperando_datos_de_DataTables](https://user-images.githubusercontent.com/99599597/218106483-da41a7b5-e374-456d-a1f2-db45efacc2e4.png)
 
-Aqui podemos observar como hemos recuperado los datos de nuestra tabla al hacer click en el boton click en una fila determianda, lo que tranquilamente ya podemos manipular para utilizarlo en nuestro modals. Pero aqui suele existir un problema al obtener la fila actual, en razon de que parents('tr') obtiene los padres de la fila seleccionada, en caso de que haya un cambio en las propiedades de la table como ser por ejemplo cuando lo hacemos responsive, se van creando otros elementos en la tabla por consiguiente no podra encontrar los parents('tr'), es por ello que existe una solucion mucho mejor. 
+Aqui podemos observar como hemos recuperado los datos de nuestra tabla al hacer click en el boton click en una fila determianda, lo que tranquilamente ya podemos manipular para utilizarlo en nuestro modals. Pero aqui suele existir un problema al obtener la fila actual, en razon de que parents('tr') obtiene los padres de la fila seleccionada, en caso de que haya un cambio en las propiedades de la tabla como ser por ejemplo cuando lo hacemos responsive, se van creando otros elementos en la tabla por consiguiente no podra encontrar los parents('tr'), es por ello que existe una solucion mucho mejor, y lo podemos encontrar en https://datatables.net/reference/api/cell().index()
 
 
