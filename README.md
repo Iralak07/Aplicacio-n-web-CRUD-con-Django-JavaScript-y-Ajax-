@@ -785,6 +785,9 @@ A medida que hacemos click en una fila determianda el row va ir variando dependi
   
 ![obteniendo_datos_de_mi_tabla_cell](https://user-images.githubusercontent.com/99599597/218157432-175d40e0-5594-4cd4-a91b-dc856d3c9c62.png)
 
-Obtuvimos los datos de nuestra tabla de la fila que deseamos modificar, en este caso esta es la manera mas efectiva para obtener los datos ya que no tendremos problemas al reducir el ancho de nuestra pagina. 
+Obtuvimos los datos de nuestra tabla de la fila que deseamos modificar, en este caso, esta es la manera mas efectiva para obtener los datos ya que no tendremos problemas al reducir el ancho de nuestra pagina. 
+ 
+DECIMA PRIMERA PARTE: Una vez obtenido los datos de nuestra fila y guardado en la variable data, nos queda abrir el modal para poder agregar dentro del mismo el formulario con los datos provenientes del mismo y volver a enviarlo a nuestro back-end para que lo procese, valide y lo guarde en su caso, para ello en nuestro archivo html necesitamos crear un nuevo input con el atributo hidden para que este oculto, esto en razon de que necesitamos enviar junto con el formulario el id perteneciente a la categoria la cual queremos editar, ya que en nuestro archivo views.py necesitamos instanciar el objeto a fin de pasarlo a nuestro CategoryForm junto con el registro modificado para que este lo valide.
+  
   
 
