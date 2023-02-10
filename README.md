@@ -750,4 +750,41 @@ A nuestra variable table.row() le pasamos la posicion actual de la fila con $(th
 
 Aqui podemos observar como hemos recuperado los datos de nuestra tabla al hacer click en el boton click en una fila determianda, lo que tranquilamente ya podemos manipular para utilizarlo en nuestro modals. Pero aqui suele existir un problema al obtener la fila actual, en razon de que parents('tr') obtiene los padres de la fila seleccionada, en caso de que haya un cambio en las propiedades de la tabla como ser por ejemplo cuando lo hacemos responsive, se van creando otros elementos en la tabla por consiguiente no podra encontrar los parents('tr'), es por ello que existe una solucion mucho mejor, y lo podemos encontrar en https://datatables.net/reference/api/cell().index()
 
+Con la funcion cell().index() podemos obtener el indice de la fila, columna y columna visible
+lo que a nosotros nos interesa es obtener solo el indice de la fila, tal como lo hemos obtenido con el metodo anterior
+para ello nuestro codigo debe quedar de la siguiente manera.
+
+            $('#table_id tbody').on('click', 'button[rel="edit"]', 'tr', function(){
+                var td = $(this).closest('td, li');
+                var tr = table.cell(td).index()
+                console.log(evento);
+                console.log(tr);
+
+            });
+
+Aqui lo que hacemos primeramente con la variable td es obtener los datos de una celda de datos creados con la etiqueta <td>, luego en la variable tr lo que hacemos es obtener el indice a traves del metodo cell pasandole nuestro td como argumento, como lo podemos ver seguidamente.
+
+  ![capturando evento con closest y cell](https://user-images.githubusercontent.com/99599597/218148736-a2cd5265-863b-4d08-a240-5e2f84cf1025.png)
+
+
+Como podemos observar en la variable tr nos muestra los siguientes datos.
+            Object { row: 1, column: 2, columnVisible: 2 }
+                ​ column: 2
+                ​ columnVisible: 2
+                ​ row: 1
+  
+A medida que hacemos click en una fila determianda el row va ir variando dependiendo en que fila se encuentra ubicada en este caso hicimos click en el segundo elemento, que corresponde a la fila numero 1, si haceos click en el primer elemento nos devolvera el row en 0, por consiguiente aqui tenemos lo necesario por extraer los datos de nuestra tabla. Volvamos a nuestro archivo funciones.js y modifiquemoslo.
+  
+          $('#table_id tbody').on('click', 'button[rel="edit"]', 'tr', function(){
+            var td = $(this).closest('td, li');
+            var tr = table.cell(td).index()
+            var data = table.row(tr.row).data()
+            console.log(data);
+
+        })
+  
+![obteniendo_datos_de_mi_tabla_cell](https://user-images.githubusercontent.com/99599597/218157432-175d40e0-5594-4cd4-a91b-dc856d3c9c62.png)
+
+Obtuvimos los datos de nuestra tabla de la fila que deseamos modificar, en este caso esta es la manera mas efectiva para obtener los datos ya que no tendremos problemas al reducir el ancho de nuestra pagina. 
+  
 
