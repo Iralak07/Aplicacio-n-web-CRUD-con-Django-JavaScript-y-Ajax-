@@ -742,10 +742,12 @@ Archivo funciones.js
             console.log(data);
         })
         
-Con el objetivo de tomar el evento click en el boton editar de cada fila, necesitamos precisar el evento que queremos tomar para ello apuntamos al id de nuestra tabla especificamente en el tbody, en donde estan las filas con los datos de nuestro registro, al realizar click, en el boton con la relacion edit, en la tr o fila de tabla se dispara una funcion, en donde con var data es igual a los datos existentes en dicha fila, esto lo podemos encontrar como ejemplo en https://datatables.net/examples/ajax/null_data_source.html, luego hacemos un console.log de data para ver que nos muestra al presionar el boton edit. Acuerdense que para esto necesitamos crear una varibale 
+Con el objetivo de tomar el evento click en el boton editar de cada fila, necesitamos precisar el evento que queremos tomar para ello apuntamos al id de nuestra tabla especificamente en el tbody, en donde estan las filas con los datos de nuestro registro, al realizar click, en el boton con la relacion edit, en la tr o fila de tabla se dispara una funcion, en donde con var data es igual a los datos existentes en dicha fila, esto lo podemos encontrar como ejemplo en https://datatables.net/examples/ajax/null_data_source.html, luego hacemos un console.log de data para ver que nos muestra al presionar el boton edit. Acuerdense que para esto necesitamos crear una varibale que sea igual a nuestra tabla tal como lo he mencionado precedentemente. -
+
+A nuestra variable table.row() le pasamos la posicion actual de la fila con $(this).parents('tr') y con table.row().data(); obtenemos los datos de dicha fila y lo colocamos en la variable data.
 
 ![recuperando_datos_de_DataTables](https://user-images.githubusercontent.com/99599597/218106483-da41a7b5-e374-456d-a1f2-db45efacc2e4.png)
 
-Aqui podemos observar como hemos recuperado los datos de nuestra tabla al hacer click en el boton click en una fila determianda, 
+Aqui podemos observar como hemos recuperado los datos de nuestra tabla al hacer click en el boton click en una fila determianda, lo que tranquilamente ya podemos manipular para utilizarlo en nuestro modals. Pero aqui suele existir un problema al obtener la fila actual, en razon de que parents('tr') obtiene los padres de la fila seleccionada, en caso de que haya un cambio en las propiedades de la table como ser por ejemplo cuando lo hacemos responsive, se van creando otros elementos en la tabla por consiguiente no podra encontrar los parents('tr'), es por ello que existe una solucion mucho mejor. 
 
 
