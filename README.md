@@ -879,10 +879,122 @@ DECIMA SEGUNDA PARTE: Ya hemos obtenido los datos de nuestro registro que necesi
   
 En el caso de no instanciar nuestro registro y no pasarlo a la CategoryForm(request.POST, instance=objeto), lo que hara es crear un nuevo registro en el caso que hemos modificado el nombre de la categoria en nuestra interfaz y nos arrojaria un error de f"Category {request.POST['name']} already exists" es decir que ya existe la categoria en el caso de ingresar una categoria existente en nuestra base de datos.  Si instanciamos correctamente tal como lo hemos hecho, al modificar un registro en nuestra interfaz y enviarlo a nuestra vista, este lo guardara modificando el registro en la base de datos sin alterar el id o crear un id nuevo. -
   
-Ahora unicamente nos resta eliminar un registro de nuestra base de datos desde nuestra interfaz, para ello ya hemos creado previamente el boton delete el cual lo renderizamos a nuestro DataTables.
   
-DECIMO TERCERA PARTE: 
+DECIMO TERCERA PARTE: Ahora unicamente nos resta eliminar un registro de nuestra base de datos desde nuestra interfaz, para ello ya hemos creado previamente el boton delete el cual lo renderizamos a nuestro DataTables. Primeramente necesitamos controlar el evento click del boton delete tal como lo hemos realizado con el edit, para ello necesitamos llamar a una funcion dentro de nuestro archivo funciones.js, el cual se encargara de recuperar los datos de nuestra tabla y mostrarnos una ventana emergente quien nos pondra una advertencia si queremos eliminar o no el registro, en caso de confirmar enviar los datos del registro a nuestro back-end para que lo procese y lo elimine en su caso. Para la ventana emergente utilizaremos un complemento muy facil de usar el cual es SweetAlert2 que lo podemos descargar de la siguiente pagina https://sweetalert2.github.io/, este complemento esta muy bien documentado con ejemplos claros y sencillos. 
 
+Archivo funciones.js
 
+        $('#table_id tbody').on('click', 'button[rel="delete"]', function(){
+            var td = $(this).closest('td, li');
+            var tr = table.cell(td).index();
+            var data = table.row(tr.row).data();
+            var data_id = data[0];
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+              }).then((result) => {
+                if (result.value == true) {
+                    deleteCategory(data_id);
+                  Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                  )
+                }
+              })
+        })
+        
+Aqui, al igual que en el editar registro hemos tomado el evento click pero en este caso el de eliminar, llamamos a una funcion que obtiene los datos de la fila y lo guarda en una variable, como en este caso, unicamente necesitamos enviarle el id de la categoria el cual es unico y con eso ya nos bastaria para eliminar dicho registro de la base de datos, seguidamente es abierto automaticamente la ventana emergente de SweetAlert con un mensaje de alerta, con dos botones para confirmar o cancelar la eliminacion de nuestro registro, en el caso que hagamos click en confirmar con .then((result) => toma el resultado de nuestra decision, luego con una condicional verificamos si result.value es igual a true para luego llamar a una funciona "deleteCategory(data_id)" que se encargara de enviar a traves de una peticion ajax el data_id de nuestro registro el cual lo pasamos como argumento a nuestra funcion "deleteCategory".
+
+        function deleteCategory(data){
+            var csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+            $.ajax(
+                {
+                  headers: {'X-CSRFToken': csrftoken},
+                  url : window.location.pathname,
+                  type: "POST",
+                  data : {
+                    id: data,
+                    action: 'delete'
+                  },
+                })
+                  .done(function(data) {
+                    if(!data['error']){
+                        $('#modal_category').modal('hide');
+                        $('#table_id').DataTable().ajax.reload();
+                        return false
+                    }else{
+                        alert(data.error)
+                    }
+                  })
+                  .fail(function(data) {
+                    alert( "error" );
+                  })
+                  .always(function(data) {
+                  });
+        }
+ 
+ Como se pueden percatar la funcion Ajax es el mismo que el que utilizamos para registrar una nueva categoria, unicamente lo hemos modificado en los datos enviados ya que necesitamos enviarle el id que lo hemos pasado como parametro y el action que es igual a 'delete', el cual nos servira dentro de nuestro vista para diferenciar el tipo de accion que necesitamos realizar.
+ 
+ Archivo views.py
+ 
+ def listCategory(request):
+    print(request.POST)
+    data = {}
+    if request.method == 'GET':
+        template_name = 'listCategory.html'
+        form = CategoryForm()
+        
+        return render(
+            request,
+            template_name,
+            {
+                'form':form,
+            })
+        
+    if request.method == "POST":
+        try:
+            action = request.POST['action']
+            if action == 'search':
+                data = list(Category.objects.all().values_list())
+                return JsonResponse(data, safe=False)
+            elif action ==  'create':
+                form = CategoryForm(request.POST)
+                if form.is_valid():
+                    form.save()
+                    return JsonResponse(data, safe=False)
+                else:
+                    data['error'] = f"Category {request.POST['name']} already exists"
+                    return JsonResponse(data, safe=False)
+            elif action == 'edit':
+                print(request.POST)
+                pk = request.POST['id']
+                objeto = Category.objects.get(pk=pk)
+                form = CategoryForm(request.POST, instance=objeto)
+                if form.is_valid():
+                    form.save()
+                    return JsonResponse(data, safe=False)
+                else:
+                    data['error'] = f"Category {request.POST['name']} already exists"
+                    return JsonResponse(data, safe=False)
+            elif action == 'delete':
+                 pk = request.POST['id']
+                 try:
+                     objeto = Category.objects.get(pk=pk)
+                     objeto.delete()
+                     return JsonResponse(data, safe=False)
+                     eturn JsonResponse(data, safe=False)
+                 except Exception as e:
+                     data['error'] = str(e)
+        except Exception as e:
+            data['error'] = str(e)
+            return JsonResponse(data, safe=False)
+            
+Nuestro vista ha quedado de la siguiente manera, le hemos agregado un bloque de codigo nuevo el cual comienza con la condicional action == 'delete', como dijimos precedentemente, en la peticion ajax hemos enviado dicho dato, en caso de que action sea igual a delete, nuestro el flujo entrara a nuestro bloque de codigo, que primeramente hace es guardar en una variable pk (pueden poner cualquier tipo de variable, id, indice, identificador etc) el id del registro seleccionado en nuestra interfaz, luego realizamos un try a fin de controlar cualquier tipo de error que pueda suceser, obtenemos el registro que deseamos eliminar, y con delete() lo eliminamos, luego hacemos un retorno, en caso de existir algun tipo de error nos devolvera. 
   
 
