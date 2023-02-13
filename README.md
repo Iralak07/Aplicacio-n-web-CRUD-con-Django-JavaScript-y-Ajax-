@@ -900,11 +900,6 @@ Archivo funciones.js
               }).then((result) => {
                 if (result.value == true) {
                     deleteCategory(data_id);
-                  Swal.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                  )
                 }
               })
         })
@@ -926,6 +921,13 @@ Aqui, al igual que en el editar registro hemos tomado el evento click pero en es
                   .done(function(data) {
                     if(!data['error']){
                         $('#modal_category').modal('hide');
+                        Swal.fire({
+                          position: 'top-end',
+                          icon: 'success',
+                          title: 'Se ha eliminado correctamente',
+                          showConfirmButton: false,
+                          timer: 1500
+                        })
                         $('#table_id').DataTable().ajax.reload();
                         return false
                     }else{
@@ -939,7 +941,7 @@ Aqui, al igual que en el editar registro hemos tomado el evento click pero en es
                   });
         }
  
- Como se pueden percatar la funcion Ajax es el mismo que el que utilizamos para registrar una nueva categoria, unicamente lo hemos modificado en los datos enviados ya que necesitamos enviarle el id que lo hemos pasado como parametro y el action que es igual a 'delete', el cual nos servira dentro de nuestro vista para diferenciar el tipo de accion que necesitamos realizar.
+Como se pueden percatar la funcion Ajax es el mismo que el que utilizamos para registrar una nueva categoria, unicamente lo hemos modificado en los datos enviados ya que necesitamos enviarle el id que lo hemos pasado como parametro y el action que es igual a 'delete', el cual nos servira dentro de nuestro vista para diferenciar el tipo de accion que necesitamos realizar.
  
  Archivo views.py
  
@@ -995,6 +997,6 @@ Aqui, al igual que en el editar registro hemos tomado el evento click pero en es
             data['error'] = str(e)
             return JsonResponse(data, safe=False)
             
-Nuestro vista ha quedado de la siguiente manera, le hemos agregado un bloque de codigo nuevo el cual comienza con la condicional action == 'delete', como dijimos precedentemente, en la peticion ajax hemos enviado dicho dato, en caso de que action sea igual a delete, nuestro el flujo entrara a nuestro bloque de codigo, que primeramente hace es guardar en una variable pk (pueden poner cualquier tipo de variable, id, indice, identificador etc) el id del registro seleccionado en nuestra interfaz, luego realizamos un try a fin de controlar cualquier tipo de error que pueda suceser, obtenemos el registro que deseamos eliminar, y con delete() lo eliminamos, luego hacemos un retorno, en caso de existir algun tipo de error nos devolvera. 
+Nuestro vista ha quedado de la siguiente manera, le hemos agregado un bloque de codigo nuevo el cual comienza con la condicional action == 'delete', como dijimos precedentemente, en la peticion ajax hemos enviado dicho dato, en caso de que action sea igual a delete, el flujo entrara a nuestro bloque de codigo, que primeramente lo que hace es guardar en una variable pk (pueden poner cualquier tipo de variable, id, indice, identificador etc) el id del registro seleccionado en nuestra interfaz, luego realizamos un try a fin de controlar cualquier tipo de error que pueda suceder, obtenemos el registro que deseamos eliminar, y con delete() lo eliminamos, luego hacemos un retorno, y en caso de existir algun tipo de error nos devolvera este como lo hemos echo con Create y Edit categoria. 
   
 
